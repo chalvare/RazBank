@@ -6,13 +6,14 @@ import lombok.*;
 import lombok.experimental.Tolerate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="account")
 @Data
 @Builder
 @With
-public class Account {
+public class Account implements Serializable {
 
     @Id
     @Column(name="id")

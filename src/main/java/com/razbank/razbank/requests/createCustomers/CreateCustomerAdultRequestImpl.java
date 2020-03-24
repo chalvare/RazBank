@@ -25,7 +25,7 @@ public class CreateCustomerAdultRequestImpl implements CreateCustomerRequest {
                 .createDate(customerDTO.getCreateDate())
                 .typeCustomer(customerDTO.getTypeCustomer())
                 .contactInformation(customerDTO.getContactInformation()).build();
-        Account account = Account.builder().customer(customer).status(0).build();
+        Account account = Account.builder().accountNumber(1).customer(customer).status(0).build();
 
         this.customer=customer;
         this.account=account;

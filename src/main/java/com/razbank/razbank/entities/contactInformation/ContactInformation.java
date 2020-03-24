@@ -6,13 +6,14 @@ import lombok.*;
 import lombok.experimental.Tolerate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="contact_information")
 @Data
 @Builder
 @With
-public class ContactInformation {
+public class ContactInformation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

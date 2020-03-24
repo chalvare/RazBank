@@ -4,9 +4,11 @@ import com.razbank.razbank.entities.customer.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
-public class AccountModel {
+public class AccountModel  implements Serializable {
 
     private int id;
 

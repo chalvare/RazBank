@@ -7,6 +7,7 @@ import lombok.experimental.Tolerate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Data
 @Builder
 @With
-public class Customer {
+public class Customer implements Serializable {
 
     @Id
     @Column(name="id")
