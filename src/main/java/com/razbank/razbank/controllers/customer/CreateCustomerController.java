@@ -44,7 +44,7 @@ public class CreateCustomerController {
     @PostMapping("/invalidate/session")
     public String destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
-        return null;
+        return "";
     }
 
 }
