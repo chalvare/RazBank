@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+    >
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Customer Directory</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Customer Directory</h3>
+    <hr>
+
+
+    <form th:action="@{/customers/search}" class="form-inline">
+        <a th:href="@{/customers/showFormForAdd}"
+           class="btn btn-primary btn-sm mr-5 mb-3">
+            Add Customer
+        </a>
+
+        <input class="form-control  ml-5 mr-sm-2 mb-3" type="search" name="customerName" placeholder="Search by name" />
+
+        <button class="btn btn-success mb-3" type="submit">Search</button>
+    </form>
+
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th colspan="2" >Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="temp : ${customers}">
+            <td th:text="${temp.id}" />
+            <td th:text="${temp.name}" />
+            <td th:text="${temp.lastName}" />
+            <td th:text="${temp.email}" />
+            <td th:text="${temp.createDate}" />
+
+            <td>
+                <div>
+
+                    <!-- Add "update" button/link -->
+                    <a th:href="@{/customers/showFormForUpdate(customerId=${temp.id})}"
+                       class="btn btn-info btn-sm">
+                        Update
+                    </a>
+
+                </div>
+            </td>
+            <td>
+                <div>
+                    <!-- Add "delete" button/link -->
+                    <a th:href="@{/customers/delete(customerId=${temp.id})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                        Delete
+                    </a>
+                </div>
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+</html>
+
+
+
