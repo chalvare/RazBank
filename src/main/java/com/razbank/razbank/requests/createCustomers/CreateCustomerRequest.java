@@ -1,8 +1,11 @@
 package com.razbank.razbank.requests.createCustomers;
 
-import com.razbank.razbank.dtos.customer.CustomerDTO;
+import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.requests.Request;
 
+import javax.servlet.http.HttpSession;
+
 public interface CreateCustomerRequest extends Request {
-    void buildCustomer(CustomerDTO customerDTO);
+    void setSession(HttpSession session);
+    void buildCustomer(Customer customer);
 }

@@ -32,6 +32,7 @@ public class CustomerDTO implements Serializable {
     @NonNull
     private int typeCustomer;
 
+    @NonNull
     private List<Account> accounts;
 
     @NonNull

@@ -1,6 +1,7 @@
 package com.razbank.razbank.entities.contactInformation;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.razbank.razbank.entities.customer.Customer;
 import lombok.*;
 import lombok.experimental.Tolerate;
@@ -40,6 +41,7 @@ public class ContactInformation implements Serializable {
 
     @OneToOne(mappedBy = "contactInformation", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private Customer customer;
 
     @Tolerate

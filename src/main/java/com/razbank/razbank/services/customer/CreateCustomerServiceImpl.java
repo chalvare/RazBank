@@ -2,6 +2,7 @@ package com.razbank.razbank.services.customer;
 
 import com.razbank.razbank.command.customer.SaveCustomerCommand;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
+import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.customer.CreateCustomerException;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerChildRequestImpl;
@@ -11,22 +12,37 @@ import com.razbank.razbank.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 @Service
 public class CreateCustomerServiceImpl implements CreateCustomerService {
 
     private static String CLASSNAME = CreateCustomerServiceImpl.class.getSimpleName();
     private SaveCustomerCommand saveCustomerCommand;
+    private HttpSession session;
 
    @Autowired
-    public CreateCustomerServiceImpl(SaveCustomerCommand saveCustomerCommand) {
+    public CreateCustomerServiceImpl(SaveCustomerCommand saveCustomerCommand,HttpSession session) {
         this.saveCustomerCommand = saveCustomerCommand;
+        this.session = session;
     }
 
     @Override
-    public Response createCustomer(CustomerDTO customerDTO) {
+    public Response createCustomer(CustomerDTO customerDTO, HttpSession session) {
         try {
             CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customerDTO.getTypeCustomer());
-            customerCreateInfoRequest.buildCustomer(customerDTO);
+            Customer customer = Customer.builder()
+                    .name(customerDTO.getName())
+                    .lastName(customerDTO.getLastName())
+                    .email(customerDTO.getEmail())
+                    .createDate(customerDTO.getCreateDate())
+                    .typeCustomer(customerDTO.getTypeCustomer())
+                    .accounts(customerDTO.getAccounts())
+                    .contactInformation(customerDTO.getContactInformation()).build();
+
+            customerCreateInfoRequest.setSession(this.session);
+            customerCreateInfoRequest.buildCustomer(customer);
+
             saveCustomerCommand.setCustomerRequest(customerCreateInfoRequest);
             saveCustomerCommand.execute();
         }catch(Exception e){

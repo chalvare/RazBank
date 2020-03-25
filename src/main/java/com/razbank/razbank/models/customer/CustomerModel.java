@@ -4,6 +4,7 @@ import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.contactInformation.ContactInformation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerModel implements Serializable {
 
     private int id;

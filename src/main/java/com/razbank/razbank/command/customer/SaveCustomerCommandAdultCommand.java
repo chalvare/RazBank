@@ -23,6 +23,7 @@ public class SaveCustomerCommandAdultCommand implements SaveCustomerCommand {
     public void saveCustomer(){
         CreateCustomerAdultRequestImpl createCustomerAdultRequest = (CreateCustomerAdultRequestImpl) createCustomerRequest;
         Customer customer = createCustomerAdultRequest.getCustomer();
+        createCustomerAdultRequest.getSession().setAttribute("SESSION", customer);
         customerRepository.save(customer);
     }
 

@@ -1,36 +1,33 @@
 package com.razbank.razbank.requests.createCustomers;
 
-import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
 @Component
-@Getter
-@Setter
+@Data
 public class CreateCustomerAdultRequestImpl implements CreateCustomerRequest {
 
+    private HttpSession session;
     private Customer customer;
-    private Account account;
+    private List<Account> accounts;
 
     @Override
-    public void buildCustomer(CustomerDTO customerDTO) {
+    public void buildCustomer(Customer customer) {
 
-        Customer customer = Customer.builder()
-                .name(customerDTO.getName())
-                .lastName(customerDTO.getLastName())
-                .email(customerDTO.getEmail())
-                .createDate(customerDTO.getCreateDate())
-                .typeCustomer(customerDTO.getTypeCustomer())
-                .contactInformation(customerDTO.getContactInformation()).build();
-        Account account = Account.builder().accountNumber(2).customer(customer).status(0).build();
+        this.customer = customer;
+        this.accounts=customer.getAccounts();
+        for(Account acc:accounts){
+           acc.setCustomer(this.customer);
+        }
+        this.customer.setAccounts(this.accounts);
 
-        this.customer=customer;
-        this.account=account;
-        this.customer.add(this.account);
-        this.account.setCustomer(this.customer);
     }
+
+
 
 }

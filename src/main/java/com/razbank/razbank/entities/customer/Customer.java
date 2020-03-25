@@ -1,5 +1,6 @@
 package com.razbank.razbank.entities.customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.contactInformation.ContactInformation;
 import lombok.*;
@@ -42,6 +43,7 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH})
     @ToString.Exclude
+    @JsonIgnore
     private List<Account> accounts;
 
     @OneToOne(cascade = CascadeType.ALL)
