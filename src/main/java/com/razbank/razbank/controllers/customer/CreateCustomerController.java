@@ -36,7 +36,6 @@ public class CreateCustomerController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<CustomerModel> getCustomer(@PathVariable int customerId){
-
         Optional<Customer> customer = customerService.findById(customerId);
         customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
         CustomerModel customerModel = new CustomerModel();
