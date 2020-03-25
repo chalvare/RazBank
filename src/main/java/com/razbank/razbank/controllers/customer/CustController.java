@@ -1,15 +1,7 @@
 package com.razbank.razbank.controllers.customer;
 
-import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
-import com.razbank.razbank.services.customer.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/customers")

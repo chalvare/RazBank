@@ -17,9 +17,9 @@ import javax.servlet.http.HttpSession;
 @Service
 public class CreateCustomerServiceImpl implements CreateCustomerService {
 
-    private static String CLASSNAME = CreateCustomerServiceImpl.class.getSimpleName();
-    private SaveCustomerCommand saveCustomerCommand;
-    private HttpSession session;
+    private final static String CLASSNAME = CreateCustomerServiceImpl.class.getSimpleName();
+    private final SaveCustomerCommand saveCustomerCommand;
+    private final HttpSession session;
 
    @Autowired
     public CreateCustomerServiceImpl(SaveCustomerCommand saveCustomerCommand,HttpSession session) {

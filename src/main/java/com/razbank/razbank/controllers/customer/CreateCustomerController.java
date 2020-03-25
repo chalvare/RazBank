@@ -23,8 +23,8 @@ import java.util.Optional;
 @RequestMapping("/client")
 public class CreateCustomerController {
 
-    private CreateCustomerService createCustomerService;
-    private CustomerService customerService;
+    private final CreateCustomerService createCustomerService;
+    private final CustomerService customerService;
 
     @Autowired
     public CreateCustomerController(CreateCustomerService createCustomerService,CustomerService customerService) {
@@ -62,9 +62,8 @@ public class CreateCustomerController {
     }
 
     @PostMapping("/invalidate/session")
-    public String destroySession(HttpServletRequest request) {
+    public void destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "Destroy";
     }
 
 }

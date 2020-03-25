@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SaveCustomerCommandAdultCommand implements SaveCustomerCommand {
 
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
     private CreateCustomerRequest createCustomerRequest;
 
     @Autowired
