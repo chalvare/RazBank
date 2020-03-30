@@ -5,8 +5,10 @@ import com.razbank.razbank.entities.contactInformation.ContactInformation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,24 +19,28 @@ public class CustomerModel implements Serializable {
 
     private int id;
 
-    @NonNull
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Use only letters, please")
     private String name;
 
-    @NonNull
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Use only letters, please")
     private String lastName;
 
-    @NonNull
+    @NotNull
+    @Email(message = "Incorrect email format")
     private String email;
 
-    @NonNull
+    @NotNull
     private String createDate;
 
-    @NonNull
+    @NotNull
+    @Range(min=0,max = 10)
     private int typeCustomer;
 
     private List<Account> accounts;
 
-    @NonNull
+    @NotNull
     private ContactInformation contactInformation;
 
 

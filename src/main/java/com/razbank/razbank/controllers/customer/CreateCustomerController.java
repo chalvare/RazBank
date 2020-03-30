@@ -8,6 +8,9 @@ import com.razbank.razbank.models.customer.CustomerModel;
 import com.razbank.razbank.services.customer.CreateCustomerService;
 import com.razbank.razbank.services.customer.CustomerService;
 import com.razbank.razbank.utils.Response;
+import com.razbank.razbank.utils.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +20,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
 public class CreateCustomerController {
 
+    private final static Logger logger = LoggerFactory.getLogger(CreateCustomerController.class);
     private final CreateCustomerService createCustomerService;
     private final CustomerService customerService;
 
@@ -46,7 +51,12 @@ public class CreateCustomerController {
     @PostMapping(value="/client",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<CustomerModel> create(@RequestBody CustomerModel customerModel,HttpServletRequest request){
+    public ResponseEntity<CustomerModel> create(@RequestBody @Valid CustomerModel customerModel, HttpServletRequest request){
+
+        if(!Validator.validate(customerModel)){
+            logger.error("INVALID CUSTOMER: "+customerModel.toString());
+            throw new CreateCustomerException("INVALID CUSTOMER: "+customerModel.toString());
+        }
 
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customerModel, customerDTO);

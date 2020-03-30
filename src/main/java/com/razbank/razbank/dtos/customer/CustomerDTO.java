@@ -5,8 +5,8 @@ import com.razbank.razbank.entities.contactInformation.ContactInformation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,25 +17,25 @@ public class CustomerDTO implements Serializable {
 
     private int id;
 
-    @NonNull
+    @NotNull
     private String name;
 
-    @NonNull
+    @NotNull
     private String lastName;
 
-    @NonNull
+    @NotNull
     private String email;
 
-    @NonNull
+    @NotNull
     private String createDate;
 
-    @NonNull
+    @NotNull
     private int typeCustomer;
 
-    @NonNull
+    @NotNull
     private List<Account> accounts;
 
-    @NonNull
+    @NotNull
     private ContactInformation contactInformation;
 
 }
