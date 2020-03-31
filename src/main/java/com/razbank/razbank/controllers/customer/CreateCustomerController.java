@@ -40,7 +40,7 @@ public class CreateCustomerController {
     @GetMapping(value="/client/{customerId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<CustomerModel> getCustomer(@PathVariable int customerId){
+    public ResponseEntity<CustomerModel> getCustomer(@PathVariable @Valid int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
         customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
         CustomerModel customerModel = new CustomerModel();
@@ -69,6 +69,17 @@ public class CreateCustomerController {
         BeanUtils.copyProperties(c, customerModel);
 
         return new ResponseEntity<>(customerModel, HttpStatus.CREATED);
+    }
+
+    //No utilizar salvo para pruebas. Poner Cascade.ALL para borrar todos los registros
+    @DeleteMapping(value="/client/{customerId}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<String> deleteCustomer(@PathVariable @Valid int customerId){
+        Optional<Customer> customer = customerService.findById(customerId);
+        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
+        customerService.deleteById(customerId);
+        return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 
     @PostMapping("/invalidate/session")

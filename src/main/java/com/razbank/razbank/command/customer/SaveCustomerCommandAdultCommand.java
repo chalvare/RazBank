@@ -2,7 +2,6 @@ package com.razbank.razbank.command.customer;
 
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.repositories.account.AccountRepository;
 import com.razbank.razbank.repositories.customer.CustomerRepository;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerRequest;
@@ -13,14 +12,12 @@ import org.springframework.stereotype.Component;
 public class SaveCustomerCommandAdultCommand implements SaveCustomerCommand {
 
     private final CustomerRepository customerRepository;
-    private final AccountRepository accountRepository;
     private CreateCustomerRequest createCustomerRequest;
 
     @Autowired
     public SaveCustomerCommandAdultCommand(/*@Qualifier("createCustomerAdultRequestImpl") CreateCustomerRequest customerCreateInfoRequest,*/
-            CustomerRepository customerRepository, AccountRepository accountRepository) {
+            CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.accountRepository = accountRepository;
     }
 
     @Override
