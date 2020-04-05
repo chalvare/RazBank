@@ -2,8 +2,6 @@ package com.razbank.razbank.controllers.customer;
 
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
-import com.razbank.razbank.kafka.Producer;
-import com.razbank.razbank.kafka.TwitterProducer;
 import com.razbank.razbank.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +15,10 @@ import java.util.Optional;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final Producer producer;
-    private final TwitterProducer twitterProducer;
 
     @Autowired
-    public CustomerController(CustomerService customerService, Producer producer, TwitterProducer twitterProducer) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.producer = producer;
-        this.twitterProducer = twitterProducer;
     }
 
     @GetMapping("/customer")
@@ -45,23 +39,17 @@ public class CustomerController {
 
     @PostMapping("/customer")
     public Customer addCustomer(@RequestBody Customer customer){
-        //customer=new Customer("prueba","apellido","mail",new Date(Calendar.getInstance().getTime().getTime()).toString());
         customer.setId(0);
         customerService.save(customer);
 
         return customer;
     }
 
-    @PostMapping("/kafka")
-    public void kafka(@RequestParam(name="message") String message){
-        //this.producer.sendMessage(message);
-        this.twitterProducer.config2();
-    }
+
 
 
     @PutMapping("/customer")
     public Customer updateCustomer(@Valid @RequestBody Customer customer){
-        //customer=new Customer("prueba","apellido","mail",new Date(Calendar.getInstance().getTime().getTime()).toString());
         customerService.save(customer);
 
         return customer;
