@@ -123,6 +123,12 @@
 			<version>6.1.2.Final</version>
 		</dependency>
 
+		<!--TESSERACT-->
+		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>4.5.1</version>
+		</dependency>
 
 	</dependencies>
 

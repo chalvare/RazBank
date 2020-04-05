@@ -13,6 +13,7 @@ CREATE TABLE `customer` (
   `email` varchar(45) DEFAULT NULL,
   `create_date` varchar(45) DEFAULT NULL,
   `type_customer` int(2) DEFAULT 0,
+  `birth_country` varchar(255),
   `contact_information_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_DETAIL_idx` (`contact_information_id`),
