@@ -18,5 +18,10 @@ public class AccountDTO implements Serializable {
 
     private int status;
 
+    private String tin;
+
+    private float balance;
+
     private Customer customer;
+
 }

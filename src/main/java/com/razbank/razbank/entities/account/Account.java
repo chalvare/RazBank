@@ -26,6 +26,12 @@ public class Account implements Serializable {
     @Column(name="status")
     private int status;
 
+    @Column(name="`tin`")
+    private String tin;
+
+    @Column(name="balance")
+    private float balance;
+
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinColumn(name="customer_id")
@@ -35,5 +41,6 @@ public class Account implements Serializable {
 
     @Tolerate
     public Account() {
+        //to create account
     }
 }

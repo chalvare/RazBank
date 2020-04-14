@@ -33,6 +33,18 @@ public class CustomerDTO implements Serializable {
     private int typeCustomer;
 
     @NotNull
+    private String placeOfBirth;
+
+    @NotNull
+    private String birthDate;
+
+    @NotNull
+    private String country;
+
+    @NotNull
+    private String countryCode;
+
+    @NotNull
     private List<Account> accounts;
 
     @NotNull

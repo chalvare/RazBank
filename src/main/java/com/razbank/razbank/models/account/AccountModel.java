@@ -4,6 +4,7 @@ import com.razbank.razbank.entities.customer.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 @Data
@@ -16,5 +17,10 @@ public class AccountModel  implements Serializable {
 
     private int status;
 
+    private String tin;
+
+    private float balance;
+
     private Customer customer;
+
 }

@@ -1,6 +1,6 @@
-/*DROP SCHEMA IF EXISTS `razbank`;*/
+DROP SCHEMA IF EXISTS `razbank`;
 
-/*CREATE SCHEMA `razbank`;*/
+CREATE SCHEMA `razbank`;
 
 use `razbank`;
 
@@ -13,7 +13,10 @@ CREATE TABLE `customer` (
   `email` varchar(45) DEFAULT NULL,
   `create_date` varchar(45) DEFAULT NULL,
   `type_customer` int(2) DEFAULT 0,
-  `birth_country` varchar(255),
+  `place_of_birth` varchar(255) DEFAULT NULL,
+  `birth_date` varchar(45) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `country_code` varchar(10) DEFAULT NULL,
   `contact_information_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_DETAIL_idx` (`contact_information_id`),
@@ -27,6 +30,8 @@ CREATE TABLE `account` (
   `account_number` int(10) DEFAULT NULL,
   `customer_id` int(10) DEFAULT NULL,
   `status` int(2) DEFAULT NULL,
+  `tin` varchar(255) DEFAULT NULL,
+  `balance` float(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ACCOUNT_NUMBER_UNIQUE` (`account_number`),
   KEY `FK_CUSTOMER_idx` (`customer_id`),
@@ -43,5 +48,6 @@ CREATE TABLE `contact_information` (
   `city` varchar(40) DEFAULT NULL, 
   `postal_code` varchar(20) DEFAULT NULL,
   `country` varchar(40) DEFAULT NULL,
+  `phone` varchar(40) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

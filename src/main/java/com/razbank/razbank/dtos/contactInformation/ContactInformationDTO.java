@@ -33,5 +33,8 @@ public class ContactInformationDTO implements Serializable {
     @NonNull
     private String country;
 
+    @NonNull
+    private String phone;
+
     private Customer customer;
 }

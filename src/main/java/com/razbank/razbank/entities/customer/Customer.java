@@ -19,6 +19,7 @@ import java.util.List;
 @With
 public class Customer implements Serializable {
 
+
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +40,18 @@ public class Customer implements Serializable {
 
     @Column(name="type_customer")
     private int typeCustomer;
+
+    @Column(name="place_of_birth")
+    private String placeOfBirth;
+
+    @Column(name="birth_date")
+    private String birthDate;
+
+    @Column(name="country")
+    private String country;
+
+    @Column(name="country_code")
+    private String countryCode;
 
     @OneToMany(mappedBy = "customer", cascade = {CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH})

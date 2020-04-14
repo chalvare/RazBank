@@ -39,6 +39,9 @@ public class ContactInformation implements Serializable {
     @Column(name="country")
     private String country;
 
+    @Column(name="phone")
+    private String phone;
+
     @OneToOne(mappedBy = "contactInformation", cascade = CascadeType.ALL)
     @ToString.Exclude
     @JsonIgnore

@@ -37,6 +37,19 @@ public class CustomerModel implements Serializable {
     @Range(min=0,max = 10)
     private int typeCustomer;
 
+    @NotNull
+    private String placeOfBirth;
+
+    @NotNull
+    private String birthDate;
+
+    @NotNull
+    private String country;
+
+    @NotNull
+    private String countryCode;
+
+
     private List<Account> accounts;
 
     @NotNull
