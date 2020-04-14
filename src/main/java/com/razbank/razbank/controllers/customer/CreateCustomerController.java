@@ -27,7 +27,7 @@ import java.util.Optional;
 @RequestMapping("/client")
 public class CreateCustomerController {
 
-    private final static Logger logger = LoggerFactory.getLogger(CreateCustomerController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreateCustomerController.class);
     private final CreateCustomerService createCustomerService;
     private final CustomerService customerService;
 
@@ -42,9 +42,10 @@ public class CreateCustomerController {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<CustomerModel> getCustomer(@PathVariable @Valid int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
         CustomerModel customerModel = new CustomerModel();
-        BeanUtils.copyProperties(customer.get(), customerModel);
+        BeanUtils.copyProperties(
+                customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId)),
+                customerModel);
         return new ResponseEntity<>(customerModel, HttpStatus.OK);
     }
 
@@ -54,7 +55,7 @@ public class CreateCustomerController {
     public ResponseEntity<CustomerModel> create(@RequestBody @Valid CustomerModel customerModel, HttpServletRequest request){
 
         if(!Validator.validate(customerModel)){
-            logger.error("INVALID CUSTOMER: "+customerModel.toString());
+            logger.error("INVALID CUSTOMER: {}",customerModel);
             throw new CreateCustomerException("INVALID CUSTOMER: "+customerModel.toString());
         }
 
@@ -77,8 +78,8 @@ public class CreateCustomerController {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<String> deleteCustomer(@PathVariable @Valid int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
-        customerService.deleteById(customerId);
+        customerService.deleteById(customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId))
+                                    .getId());
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 
