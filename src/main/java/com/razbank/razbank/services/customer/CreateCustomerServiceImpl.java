@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 @Service
 public class CreateCustomerServiceImpl implements CreateCustomerService {
 
-    private final static String CLASSNAME = CreateCustomerServiceImpl.class.getSimpleName();
+    private static final String CLASSNAME = CreateCustomerServiceImpl.class.getSimpleName();
     private final SaveCustomerCommand saveCustomerCommand;
     private final HttpSession session;
 
@@ -31,15 +31,7 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
     public Response createCustomer(CustomerDTO customerDTO, HttpSession session) {
         try {
             CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customerDTO.getTypeCustomer());
-            Customer customer = Customer.builder()
-                    .name(customerDTO.getName())
-                    .lastName(customerDTO.getLastName())
-                    .email(customerDTO.getEmail())
-                    .createDate(customerDTO.getCreateDate())
-                    .typeCustomer(customerDTO.getTypeCustomer())
-                    .accounts(customerDTO.getAccounts())
-                    .contactInformation(customerDTO.getContactInformation()).build();
-
+            Customer customer = buildCustomer(customerDTO);
             customerCreateInfoRequest.setSession(this.session);
             customerCreateInfoRequest.buildCustomer(customer);
 
@@ -64,8 +56,20 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
             default:
                 throw new CreateCustomerException(Response.ERROR.getMethod()+": ERROR CREATING CUSTOMER: TYPE OF CUSTOMER INVALID.");
         }
-
-
     }
 
+    private Customer buildCustomer(CustomerDTO customerDTO){
+       return Customer.builder()
+               .name(customerDTO.getName())
+               .lastName(customerDTO.getLastName())
+               .email(customerDTO.getEmail())
+               .createDate(customerDTO.getCreateDate())
+               .typeCustomer(customerDTO.getTypeCustomer())
+               .accounts(customerDTO.getAccounts())
+               .country(customerDTO.getCountry())
+               .countryCode(customerDTO.getCountryCode())
+               .birthDate(customerDTO.getBirthDate())
+               .placeOfBirth(customerDTO.getPlaceOfBirth())
+               .contactInformation(customerDTO.getContactInformation()).build();
+    }
 }

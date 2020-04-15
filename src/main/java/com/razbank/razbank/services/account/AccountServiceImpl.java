@@ -26,6 +26,8 @@ public class AccountServiceImpl implements AccountService {
         Account account = Account.builder()
                 .customer(accountDTO.getCustomer())
                 .status(accountDTO.getStatus())
+                .tin(accountDTO.getTin())
+                .balance(accountDTO.getBalance())
                 .accountNumber(accountDTO.getAccountNumber())
                 .build();
 

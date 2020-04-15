@@ -34,9 +34,5 @@ public class CrsPersonInfo {
                 .build();
     }
 
-    public static void main(String[] args ){
-        CrsEnginePhone crsEnginePhone = new CrsEnginePhone();
-        crsEnginePhone.execute(null);
-    }
 
 }
