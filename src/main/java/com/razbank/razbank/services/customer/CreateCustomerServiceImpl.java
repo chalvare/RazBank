@@ -32,6 +32,10 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
         try {
             CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customerDTO.getTypeCustomer());
             Customer customer = buildCustomer(customerDTO);
+
+
+
+
             customerCreateInfoRequest.setSession(this.session);
             customerCreateInfoRequest.buildCustomer(customer);
 

@@ -3,10 +3,7 @@ package com.razbank.razbank.riskengines.crs;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.contactInformation.ContactInformation;
 import com.razbank.razbank.entities.customer.Customer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.With;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ import java.util.List;
 @Builder
 @With
 @AllArgsConstructor
+@NoArgsConstructor
 public class CrsPersonInfo {
 
     private String name;

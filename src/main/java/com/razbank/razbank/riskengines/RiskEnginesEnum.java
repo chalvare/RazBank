@@ -3,13 +3,14 @@ package com.razbank.razbank.riskengines;
 import lombok.Getter;
 
 @Getter
-public enum Restriction {
+public enum RiskEnginesEnum {
 
-    ZCRS("ZCRS");
+    CRS_PHONE("CRS_PHONE"),
+    CRS_ADDRESS("CRS_ADDRESS");
 
     private String name;
 
-    Restriction(String name) {
+    RiskEnginesEnum(String name) {
         this.name = name;
     }
 

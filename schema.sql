@@ -51,3 +51,9 @@ CREATE TABLE `contact_information` (
   `phone` varchar(40) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `restriction` (
+  `customer_id` int(11) NOT NULL,
+  `restriction` varchar(128) NOT NULL,
+	PRIMARY KEY (`customer_id`,`restriction`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
