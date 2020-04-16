@@ -64,7 +64,7 @@ public class SaveCustomerCommandAdultCommand implements SaveCustomerCommand {
     }
 
 
-    public List<RiskEnginesEnum> loadEngines() {
+    private List<RiskEnginesEnum> loadEngines() {
         List<RiskEnginesEnum> engines =  new ArrayList<>();
         engines.add(RiskEnginesEnum.CRS_PHONE);
         engines.add(RiskEnginesEnum.CRS_ADDRESS);

@@ -2,7 +2,6 @@ package com.razbank.razbank.entities.restriction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.experimental.Tolerate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -22,7 +21,5 @@ public class RestrictionIdentity implements Serializable {
     @Column(name="restriction")
     private String restriction;
 
-    @Tolerate
-    RestrictionIdentity() {}
 
 }
