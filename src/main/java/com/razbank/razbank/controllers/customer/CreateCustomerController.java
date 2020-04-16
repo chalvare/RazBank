@@ -37,21 +37,17 @@ public class CreateCustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping(value="/client/{customerId}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value="/client/{customerId}")
     public ResponseEntity<CustomerModel> getCustomer(@PathVariable @Valid int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
         CustomerModel customerModel = new CustomerModel();
         BeanUtils.copyProperties(
-                customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId)),
+                customer.get(),
                 customerModel);
         return new ResponseEntity<>(customerModel, HttpStatus.OK);
     }
 
-    @PostMapping(value="/client",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PostMapping(value="/client")
     public ResponseEntity<CustomerModel> create(@RequestBody @Valid CustomerModel customerModel, HttpServletRequest request){
 
         if(!Validator.validate(customerModel)){
@@ -73,9 +69,7 @@ public class CreateCustomerController {
     }
 
     //No utilizar salvo para pruebas. Poner Cascade.ALL para borrar todos los registros
-    @DeleteMapping(value="/client/{customerId}",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @DeleteMapping(value="/client/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable @Valid int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
         customerService.deleteById(customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId))
