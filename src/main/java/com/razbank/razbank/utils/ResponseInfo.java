@@ -1,5 +1,9 @@
 package com.razbank.razbank.utils;
 
+import lombok.Getter;
+
+
+@Getter
 public enum ResponseInfo {
 
     OK("OK", 0),
@@ -14,22 +18,6 @@ public enum ResponseInfo {
 
     ResponseInfo(String value, int code) {
         this.value = value;
-        this.code = code;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
         this.code = code;
     }
 

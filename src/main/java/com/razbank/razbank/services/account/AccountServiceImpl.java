@@ -60,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
             addAccountCommand.setAccountRequest(addCustomerAccountRequest);
             addAccountCommand.execute();
         } catch (RazBankException e) {
-            logger.error(e.toString());
+            logger.error("RazBankException",e);
             response.setAccount(account);
             response.setCode(e.getResponseInfo().getCode());
             response.setResponseInfo(e.getResponseInfo());

@@ -30,6 +30,10 @@ public class AddAccountCommandImpl implements AddAccountCommand{
         this.accountRepository = accountRepository;
     }
 
+    /**
+     *
+     * @throws RazBankException
+     */
     @Override
     public void saveAccount() throws RazBankException {
         Account account = null;
