@@ -4,6 +4,7 @@ import com.razbank.razbank.commands.account.AddAccountCommandImpl;
 import com.razbank.razbank.dtos.account.AccountDTO;
 
 import com.razbank.razbank.entities.account.Account;
+import com.razbank.razbank.exceptions.RazBankException;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequest;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequestImpl;
 import com.razbank.razbank.responses.account.SaveAccountResponse;
@@ -58,14 +59,17 @@ public class AccountServiceImpl implements AccountService {
             addCustomerAccountRequest.buildAccount(account);
             addAccountCommand.setAccountRequest(addCustomerAccountRequest);
             addAccountCommand.execute();
-        } catch (Exception e) {
+        } catch (RazBankException e) {
+            logger.error(e.toString());
             response.setAccount(account);
-            response.setResponseInfo(ResponseInfo.ERROR);
+            response.setCode(e.getResponseInfo().getCode());
+            response.setResponseInfo(e.getResponseInfo());
             response.setMessage(e.getMessage());
         }
 
         if (addAccountCommand.isSuccess()) {
             response.setAccount(account);
+            response.setCode(ResponseInfo.OK.getCode());
             response.setResponseInfo(ResponseInfo.OK);
         }
 

@@ -19,7 +19,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/account")
 public class AccountController {
-
+    //TODO FALTAN RESPOSES
+    //TODO FALTAN COMMENTS
     private CustomerService customerService;
     private AccountService accountService;
 
@@ -43,12 +44,17 @@ public class AccountController {
     public ResponseEntity<AccountDTO> addAccountToCustomer(@PathVariable int customerId,
                                                            @RequestBody AccountDTO accountDTO) {
         Optional<Customer> customer = customerService.findById(customerId);
-
         accountDTO.setCustomer(customer
                 .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId)));
+
         SaveAccountResponse response = accountService.save(accountDTO);
-        BeanUtils.copyProperties(response.getAccount(),accountDTO);
-        return new ResponseEntity<>(accountDTO, HttpStatus.CREATED);
+        if (response.getCode() == 0) {
+            BeanUtils.copyProperties(response.getAccount(), accountDTO);
+            return new ResponseEntity<>(accountDTO, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }

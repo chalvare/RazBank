@@ -33,7 +33,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
     }
 
     @Override
-    public SaveCustomerResponse createCustomer(CustomerDTO customerDTO, HttpSession session) {
+    public SaveCustomerResponse save(CustomerDTO customerDTO, HttpSession session) {
         logger.info("SERVICE: {}", CLASSNAME);
         SaveCustomerResponse response = new SaveCustomerResponse();
         Customer customer = null;
@@ -47,7 +47,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
             saveCustomerCommand.execute();
         }catch(Exception e){
             response.setCustomer(customer);
-            response.setResponseInfo(ResponseInfo.ERROR);
+            response.setResponseInfo(ResponseInfo.GENERIC_ERROR);
             response.setMessage(e.getMessage());
         }
 

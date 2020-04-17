@@ -7,5 +7,5 @@ import javax.servlet.http.HttpSession;
 
 public interface SaveCustomerService {
 
-    SaveCustomerResponse createCustomer(CustomerDTO customerDTO, HttpSession session);
+    SaveCustomerResponse save(CustomerDTO customerDTO, HttpSession session);
 }

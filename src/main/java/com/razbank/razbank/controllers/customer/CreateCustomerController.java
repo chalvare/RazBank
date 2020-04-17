@@ -24,7 +24,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/client")
 public class CreateCustomerController {
-
+    //TODO FALTAN RESPOSES
+    //TODO FALTAN COMMENTS
     private static final Logger logger = LoggerFactory.getLogger(CreateCustomerController.class);
     private final SaveCustomerService saveCustomerService;
     private final CustomerService customerService;
@@ -44,7 +45,7 @@ public class CreateCustomerController {
     }
 
     @PostMapping(value = "/client")
-    public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerDTO customerDTO, HttpServletRequest request) {
+    public ResponseEntity<CustomerDTO> save(@RequestBody @Valid CustomerDTO customerDTO, HttpServletRequest request) {
 
         if (!Validator.validate(customerDTO)) {
             logger.error("INVALID CUSTOMER: {}", customerDTO);
@@ -53,7 +54,7 @@ public class CreateCustomerController {
 
         HttpSession session = request.getSession();
 
-        SaveCustomerResponse response = saveCustomerService.createCustomer(customerDTO, session);
+        SaveCustomerResponse response = saveCustomerService.save(customerDTO, session);
         if (response.getResponseInfo().getCode() != 0)
             throw new CreateCustomerException(response.getResponseInfo().getCode() + " ==> " + response.getMessage() + ": ERROR CREATING CUSTOMER: " + customerDTO.toString());
 
