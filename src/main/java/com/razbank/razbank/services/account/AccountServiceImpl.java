@@ -2,7 +2,6 @@ package com.razbank.razbank.services.account;
 
 import com.razbank.razbank.commands.account.AddAccountCommandImpl;
 import com.razbank.razbank.dtos.account.AccountDTO;
-
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.exceptions.RazBankException;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequest;
@@ -21,9 +20,9 @@ import org.springframework.stereotype.Service;
  * <p>
  * <b>Note:</b> N/A
  *
- * @author  Christian Álvarez
+ * @author Christian Álvarez
  * @version 1.0
- * @since   2020-04-17
+ * @since 2020-04-17
  */
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -35,6 +34,7 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Contructor
+     *
      * @param addAccountCommand implementation of AddAccountCommand
      */
     @Autowired
@@ -44,6 +44,7 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * This service method saves the account in database
+     *
      * @param accountDTO object
      * @return SaveAccountResponse: response of process
      */
@@ -60,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
             addAccountCommand.setAccountRequest(addCustomerAccountRequest);
             addAccountCommand.execute();
         } catch (RazBankException e) {
-            logger.error("RazBankException",e);
+            logger.error("RazBankException", e);
             response.setAccount(account);
             response.setCode(e.getResponseInfo().getCode());
             response.setResponseInfo(e.getResponseInfo());
@@ -78,6 +79,7 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Method which built an Account from DTO
+     *
      * @param accountDTO object
      * @return Account built with builder pattern
      */
