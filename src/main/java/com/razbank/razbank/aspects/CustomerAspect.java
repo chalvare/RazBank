@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerAspect {
 
-    //setup logger
     private final static Logger logger = LoggerFactory.getLogger(CustomerAspect.class);
 
     //setup point declarations

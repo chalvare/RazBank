@@ -1,18 +1,16 @@
 package com.razbank.razbank.utils;
 
-public enum Response {
+public enum ResponseInfo {
 
-    OK("ok", 0,null),
-    ERROR("error", 1,null);
+    OK("ok", 0),
+    ERROR("error", 1);
 
     private String value;
     private  int code;
-    private  String method;
 
-    Response(String value, int code, String method) {
+    ResponseInfo(String value, int code) {
         this.value = value;
         this.code = code;
-        this.method = method;
     }
 
     public String getValue() {
@@ -31,11 +29,4 @@ public enum Response {
         this.code = code;
     }
 
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
 }

@@ -1,6 +1,6 @@
 package com.razbank.razbank.services.customer;
 
-import com.razbank.razbank.command.customer.SaveCustomerCommand;
+import com.razbank.razbank.commands.customer.SaveCustomerAdultCommandImpl;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.customer.CreateCustomerException;
@@ -8,45 +8,55 @@ import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestIm
 import com.razbank.razbank.requests.createCustomers.CreateCustomerChildRequestImpl;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerRequest;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerSMERequestImpl;
-import com.razbank.razbank.utils.Response;
+import com.razbank.razbank.responses.customer.SaveCustomerResponse;
+import com.razbank.razbank.utils.ResponseInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
 @Service
-public class CreateCustomerServiceImpl implements CreateCustomerService {
+public class SaveCustomerServiceImpl implements SaveCustomerService {
 
-    private static final String CLASSNAME = CreateCustomerServiceImpl.class.getSimpleName();
-    private final SaveCustomerCommand saveCustomerCommand;
+    private static final String CLASSNAME = SaveCustomerServiceImpl.class.getSimpleName();
+    private static final Logger logger = LoggerFactory.getLogger(SaveCustomerServiceImpl.class);
+
+    private final SaveCustomerAdultCommandImpl saveCustomerCommand;
     private final HttpSession session;
 
    @Autowired
-    public CreateCustomerServiceImpl(SaveCustomerCommand saveCustomerCommand,HttpSession session) {
+    public SaveCustomerServiceImpl(SaveCustomerAdultCommandImpl saveCustomerCommand, HttpSession session) {
         this.saveCustomerCommand = saveCustomerCommand;
         this.session = session;
     }
 
     @Override
-    public Response createCustomer(CustomerDTO customerDTO, HttpSession session) {
+    public SaveCustomerResponse createCustomer(CustomerDTO customerDTO, HttpSession session) {
+        logger.info("SERVICE: {}", CLASSNAME);
+        SaveCustomerResponse response = new SaveCustomerResponse();
+        Customer customer = null;
+
         try {
             CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customerDTO.getTypeCustomer());
-            Customer customer = buildCustomer(customerDTO);
-
-
-
-
+            customer = buildCustomer(customerDTO);
             customerCreateInfoRequest.setSession(this.session);
             customerCreateInfoRequest.buildCustomer(customer);
-
             saveCustomerCommand.setCustomerRequest(customerCreateInfoRequest);
             saveCustomerCommand.execute();
         }catch(Exception e){
-            Response.ERROR.setMethod(CLASSNAME+":"+new Exception().getStackTrace()[0].getMethodName());
-            return Response.ERROR;
+            response.setCustomer(customer);
+            response.setResponseInfo(ResponseInfo.ERROR);
+            response.setMessage(e.getMessage());
         }
 
-        return Response.OK;
+        if (saveCustomerCommand.isSuccess()) {
+            response.setCustomer(customer);
+            response.setResponseInfo(ResponseInfo.OK);
+        }
+
+        return response;
     }
 
     private CreateCustomerRequest typeOfCustomer(int typeOfCustomer){
@@ -58,7 +68,7 @@ public class CreateCustomerServiceImpl implements CreateCustomerService {
             case 2:
                 return new CreateCustomerSMERequestImpl();
             default:
-                throw new CreateCustomerException(Response.ERROR.getMethod()+": ERROR CREATING CUSTOMER: TYPE OF CUSTOMER INVALID.");
+                throw new CreateCustomerException(CLASSNAME +": ERROR CREATING CUSTOMER: TYPE OF CUSTOMER INVALID.");
         }
     }
 

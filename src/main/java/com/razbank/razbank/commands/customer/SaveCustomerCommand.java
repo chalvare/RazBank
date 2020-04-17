@@ -1,9 +1,7 @@
-package com.razbank.razbank.command.customer;
+package com.razbank.razbank.commands.customer;
 
-import com.razbank.razbank.command.Command;
+import com.razbank.razbank.commands.Command;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerRequest;
-
-import java.util.ArrayList;
 
 public interface SaveCustomerCommand extends Command {
     void saveCustomer();

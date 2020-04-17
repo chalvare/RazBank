@@ -1,9 +1,10 @@
 package com.razbank.razbank.services.account;
 
 import com.razbank.razbank.dtos.account.AccountDTO;
+import com.razbank.razbank.responses.account.SaveAccountResponse;
 
 public interface AccountService {
 
-    void save(AccountDTO accountDTO);
+    SaveAccountResponse save(AccountDTO accountDTO);
 
 }

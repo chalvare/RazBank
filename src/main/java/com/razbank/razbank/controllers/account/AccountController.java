@@ -4,11 +4,9 @@ import com.razbank.razbank.dtos.account.AccountDTO;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
-import com.razbank.razbank.models.account.AccountModel;
+import com.razbank.razbank.responses.account.SaveAccountResponse;
 import com.razbank.razbank.services.account.AccountService;
 import com.razbank.razbank.services.customer.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,6 @@ import java.util.Optional;
 @RequestMapping("/account")
 public class AccountController {
 
-    private final static Logger logger = LoggerFactory.getLogger(AccountController.class);
     private CustomerService customerService;
     private AccountService accountService;
 
@@ -32,27 +29,26 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-   @GetMapping("/account/{customerId}")
-    public ResponseEntity<List<Account>>getCustomerAccounts(@PathVariable int customerId){
+    @GetMapping("/account/{customerId}")
+    public ResponseEntity<List<Account>> getCustomerAccounts(@PathVariable int customerId) {
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
-        return new ResponseEntity<>(customer.get().getAccounts(), HttpStatus.OK);
-
+        return new ResponseEntity<>(
+                customer
+                        .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId))
+                        .getAccounts()
+                , HttpStatus.OK);
     }
 
     @PatchMapping("/account/{customerId}")
-    public ResponseEntity<AccountModel> addAccountToCustomer(@PathVariable int customerId, @RequestBody AccountModel accountModel){
+    public ResponseEntity<AccountDTO> addAccountToCustomer(@PathVariable int customerId,
+                                                           @RequestBody AccountDTO accountDTO) {
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
 
-        AccountDTO accountDTO = new AccountDTO();
-        accountModel.setCustomer(customer.get());
-        BeanUtils.copyProperties(accountModel, accountDTO);
-        accountService.save(accountDTO);
-        return new ResponseEntity<>(accountModel, HttpStatus.CREATED);
+        accountDTO.setCustomer(customer
+                .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId)));
+        SaveAccountResponse response = accountService.save(accountDTO);
+        BeanUtils.copyProperties(response.getAccount(),accountDTO);
+        return new ResponseEntity<>(accountDTO, HttpStatus.CREATED);
     }
-
-
-
 
 }
