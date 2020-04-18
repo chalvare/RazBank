@@ -1,11 +1,16 @@
 package com.razbank.razbank.services.account;
 
 import com.razbank.razbank.commands.account.AddAccountCommandImpl;
+import com.razbank.razbank.commands.account.GetAccountsCommandImpl;
 import com.razbank.razbank.dtos.account.AccountDTO;
 import com.razbank.razbank.entities.account.Account;
+import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.RazBankException;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequest;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequestImpl;
+import com.razbank.razbank.requests.account.GetAccountsRequest;
+import com.razbank.razbank.requests.account.GetAccountsRequestImpl;
+import com.razbank.razbank.responses.account.GetAccountsResponse;
 import com.razbank.razbank.responses.account.SaveAccountResponse;
 import com.razbank.razbank.utils.ResponseInfo;
 import org.slf4j.Logger;
@@ -31,15 +36,19 @@ public class AccountServiceImpl implements AccountService {
     private static final String CLASSNAME = AccountServiceImpl.class.getSimpleName();
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
     private final AddAccountCommandImpl addAccountCommand;
+    private final GetAccountsCommandImpl getAccountsCommand;
+
 
     /**
      * Contructor
      *
      * @param addAccountCommand implementation of AddAccountCommand
+     * @param getAccountsCommand implementation of GetAccountsCommands
      */
     @Autowired
-    public AccountServiceImpl(AddAccountCommandImpl addAccountCommand) {
+    public AccountServiceImpl(AddAccountCommandImpl addAccountCommand, GetAccountsCommandImpl getAccountsCommand) {
         this.addAccountCommand = addAccountCommand;
+        this.getAccountsCommand = getAccountsCommand;
     }
 
     /**
@@ -75,6 +84,36 @@ public class AccountServiceImpl implements AccountService {
         }
 
         return response;
+    }
+
+    @Override
+    public GetAccountsResponse findAccountsByCustomerId(int customerId){
+        logger.info("SERVICE: {}", CLASSNAME);
+        GetAccountsResponse response = new GetAccountsResponse();
+        Account account = null;
+
+        try {
+            GetAccountsRequest getAccountsRequest = new GetAccountsRequestImpl();
+            account = Account.builder().customer(Customer.builder().id(customerId).build()).build();
+            getAccountsRequest.buildAccount(account);
+            getAccountsCommand.setAccountsRequest(getAccountsRequest);
+            getAccountsCommand.execute();
+        } catch (RazBankException e) {
+            logger.error("RazBankException", e);
+            response.setCustomerId(customerId);
+            response.setCode(e.getResponseInfo().getCode());
+            response.setResponseInfo(e.getResponseInfo());
+            response.setMessage(e.getMessage());
+        }
+
+        if (getAccountsCommand.isSuccess()) {
+            response.setCustomerId(customerId);
+            response.setAccountList(getAccountsCommand.getAccountList());
+            response.setCode(ResponseInfo.OK.getCode());
+            response.setResponseInfo(ResponseInfo.OK);
+        }
+        return response;
+
     }
 
     /**

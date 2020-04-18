@@ -4,6 +4,7 @@ import com.razbank.razbank.dtos.account.AccountDTO;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
+import com.razbank.razbank.responses.account.GetAccountsResponse;
 import com.razbank.razbank.responses.account.SaveAccountResponse;
 import com.razbank.razbank.services.account.AccountService;
 import com.razbank.razbank.services.customer.CustomerService;
@@ -30,14 +31,15 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    //todo borrar el acceso a la cuenta mediante el usuario y hacerlo directamente por accountID. no se puede usar el customer service
     @GetMapping("/account/{customerId}")
     public ResponseEntity<List<Account>> getCustomerAccounts(@PathVariable int customerId) {
-        Optional<Customer> customer = customerService.findById(customerId);
-        return new ResponseEntity<>(
-                customer
-                        .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId))
-                        .getAccounts()
-                , HttpStatus.OK);
+        GetAccountsResponse response = accountService.findAccountsByCustomerId(customerId);
+        if (response.getCode() == 0) {
+            return new ResponseEntity<>(response.getAccountList(), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/account/{customerId}")

@@ -26,13 +26,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
-public class AddAccountCommandImpl implements AddAccountCommand {
+public class AddAccountCommandImpl extends AddAccountCommand {
 
     private static final String CLASSNAME = AddAccountCommandImpl.class.getSimpleName();
     private static final Logger logger = LoggerFactory.getLogger(AddAccountCommandImpl.class);
 
     private final AccountRepository accountRepository;
-    private AddCustomerAccountRequest addCustomerAccountRequest;
+    private AddCustomerAccountRequestImpl addCustomerAccount;
     private boolean success;
 
     /**
@@ -54,7 +54,7 @@ public class AddAccountCommandImpl implements AddAccountCommand {
     public void saveAccount() throws RazBankException {
         Account account = null;
         try {
-            AddCustomerAccountRequestImpl addCustomerAccount = (AddCustomerAccountRequestImpl) addCustomerAccountRequest;
+
             account = addCustomerAccount.getAccount();
             account.getCustomer().add(account);
             int accountNumber = 1000 * account.getCustomer().getAccounts().size() + account.getCustomer().getId();
@@ -74,7 +74,7 @@ public class AddAccountCommandImpl implements AddAccountCommand {
      */
     @Override
     public void setAccountRequest(AddCustomerAccountRequest addCustomerAccountRequest) {
-        this.addCustomerAccountRequest = addCustomerAccountRequest;
+        this.addCustomerAccount = (AddCustomerAccountRequestImpl) addCustomerAccountRequest;
     }
 
     /**
