@@ -23,6 +23,16 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h1>Save customer adult command implementation</h1>
+ * Command which executes the customer adult account addition
+ * <p>
+ * <b>Note:</b> N/A
+ *
+ * @author Christian Álvarez
+ * @version 1.0
+ * @since 2020-04-18
+ */
 @Component
 @Getter
 @Setter
@@ -37,6 +47,12 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
     private Customer customer;
     private boolean success;
 
+    /**
+     * Constructor
+     *
+     * @param customerRepository object
+     * @param restrictionRepository object
+     */
     @Autowired
     public SaveCustomerAdultCommandImpl(/*@Qualifier("createCustomerAdultRequestImpl") CreateCustomerRequest customerCreateInfoRequest,*/
             CustomerRepository customerRepository, RestrictionRepository restrictionRepository) {
@@ -44,6 +60,11 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
         this.restrictionRepository = restrictionRepository;
     }
 
+    /**
+     * Method which saves customer
+     *
+     * @throws RazBankException exception
+     */
     @Override
     public void saveCustomer() throws RazBankException {
         Customer cust;
@@ -75,16 +96,31 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
     }
 
 
+    /**
+     * Method which sets the CreateCustomerAdultRequestImpl request
+     *
+     * @param createCustomerRequest request
+     */
     @Override
     public void setCustomerRequest(CreateCustomerRequest createCustomerRequest) {
         this.createCustomerAdultRequestImpl= (CreateCustomerAdultRequestImpl) createCustomerRequest;
     }
 
+    /**
+     * Method which executes the command
+     *
+     * @throws RazBankException exception
+     */
     @Override
     public void execute() throws RazBankException {
         saveCustomer();
     }
 
+    /**
+     * Method which load the risky engines
+     *
+     * @return List<RiskEnginesEnum>
+     */
     private List<RiskEnginesEnum> loadEngines() {
         List<RiskEnginesEnum> engines =  new ArrayList<>();
         engines.add(RiskEnginesEnum.CRS_PHONE);

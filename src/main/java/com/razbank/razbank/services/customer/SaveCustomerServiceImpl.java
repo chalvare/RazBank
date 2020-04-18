@@ -54,7 +54,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
      *
      * @param customerDTO object
      * @param session object
-     * @return GetAccountsResponse
+     * @return SaveCustomerResponse
      */
     @Override
     public SaveCustomerResponse save(CustomerDTO customerDTO, HttpSession session) {
@@ -120,7 +120,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
      * Method which builds an Customer from DTO
      *
      * @param customerDTO object
-     * @return Customer built with builder pattern
+     * @return Customer
      */
     private Customer buildCustomer(CustomerDTO customerDTO){
        return Customer.builder()

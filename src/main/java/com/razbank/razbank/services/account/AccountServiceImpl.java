@@ -152,7 +152,7 @@ public class AccountServiceImpl implements AccountService {
      * Method which builds an Account from DTO
      *
      * @param accountDTO object
-     * @return Account built with builder pattern
+     * @return Account
      */
     private Account buildAccount(AccountDTO accountDTO) {
         return Account.builder()
