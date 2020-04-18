@@ -31,11 +31,10 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    //todo borrar el acceso a la cuenta mediante el usuario y hacerlo directamente por accountID. no se puede usar el customer service
     @GetMapping("/account/{customerId}")
     public ResponseEntity<List<Account>> getCustomerAccounts(@PathVariable int customerId) {
         GetAccountsResponse response = accountService.findAccountsByCustomerId(customerId);
-        if (response.getCode() == 0) {
+        if (response.getResponseInfo().getCode() == 0) {
             return new ResponseEntity<>(response.getAccountList(), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -50,7 +49,7 @@ public class AccountController {
                 .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId)));
 
         SaveAccountResponse response = accountService.save(accountDTO);
-        if (response.getCode() == 0) {
+        if (response.getResponseInfo().getCode() == 0) {
             BeanUtils.copyProperties(response.getAccount(), accountDTO);
             return new ResponseEntity<>(accountDTO, HttpStatus.CREATED);
         } else {

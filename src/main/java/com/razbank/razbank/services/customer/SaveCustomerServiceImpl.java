@@ -3,6 +3,7 @@ package com.razbank.razbank.services.customer;
 import com.razbank.razbank.commands.customer.SaveCustomerAdultCommandImpl;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
+import com.razbank.razbank.exceptions.RazBankException;
 import com.razbank.razbank.exceptions.customer.CreateCustomerException;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerChildRequestImpl;
@@ -17,6 +18,16 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * <h1>Save customer Service Implementation</h1>
+ * Class which works as a service to save customer in database
+ * <p>
+ * <b>Note:</b> N/A
+ *
+ * @author Christian Álvarez
+ * @version 1.0
+ * @since 2020-04-18
+ */
 @Service
 public class SaveCustomerServiceImpl implements SaveCustomerService {
 
@@ -26,12 +37,25 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
     private final SaveCustomerAdultCommandImpl saveCustomerCommand;
     private final HttpSession session;
 
+    /**
+     * Constructor
+     *
+     * @param saveCustomerCommand object
+     * @param session object
+     */
    @Autowired
     public SaveCustomerServiceImpl(SaveCustomerAdultCommandImpl saveCustomerCommand, HttpSession session) {
         this.saveCustomerCommand = saveCustomerCommand;
         this.session = session;
     }
 
+    /**
+     * Method which saves customer in database
+     *
+     * @param customerDTO object
+     * @param session object
+     * @return GetAccountsResponse
+     */
     @Override
     public SaveCustomerResponse save(CustomerDTO customerDTO, HttpSession session) {
         logger.info("SERVICE: {}", CLASSNAME);
@@ -45,20 +69,25 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
             customerCreateInfoRequest.buildCustomer(customer);
             saveCustomerCommand.setCustomerRequest(customerCreateInfoRequest);
             saveCustomerCommand.execute();
-        }catch(Exception e){
-            response.setCustomer(customer);
-            response.setResponseInfo(ResponseInfo.GENERIC_ERROR);
-            response.setMessage(e.getMessage());
+        }catch(RazBankException e){
+            logger.error("RazBankException", e);
+            buildSaveCustomerResponse(response, customer, e.getResponseInfo(), e.getMessage());
         }
 
         if (saveCustomerCommand.isSuccess()) {
-            response.setCustomer(customer);
-            response.setResponseInfo(ResponseInfo.OK);
+            logger.error("SUCCESS");
+            buildSaveCustomerResponse(response, customer, ResponseInfo.OK, ResponseInfo.OK.getValue());
         }
 
         return response;
     }
 
+    /**
+     * Method which returns a kind of request depending of type of customer
+     *
+     * @param typeOfCustomer object
+     * @return CreateCustomerRequest
+     */
     private CreateCustomerRequest typeOfCustomer(int typeOfCustomer){
         switch (typeOfCustomer){
             case 0:
@@ -72,6 +101,27 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
         }
     }
 
+    /**
+     * Method which builds the command response
+     *
+     * @param response object
+     * @param customer object
+     * @param responseInfo object
+     * @param message object
+     */
+    private void buildSaveCustomerResponse(SaveCustomerResponse response, Customer customer, ResponseInfo responseInfo, String message) {
+        response.setCustomer(customer);
+        response.setResponseInfo(responseInfo);
+        response.setMessage(message);
+    }
+
+
+    /**
+     * Method which builds an Customer from DTO
+     *
+     * @param customerDTO object
+     * @return Customer built with builder pattern
+     */
     private Customer buildCustomer(CustomerDTO customerDTO){
        return Customer.builder()
                .name(customerDTO.getName())

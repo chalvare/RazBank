@@ -62,6 +62,7 @@ public class AddAccountCommandImpl extends AddAccountCommand {
             accountRepository.save(account);
             this.setSuccess(true);
         } catch (Exception e) {
+            this.setSuccess(false);
             String method = AddAccountCommandImpl.class.getEnclosingMethod().getName();
             throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, account);
         }

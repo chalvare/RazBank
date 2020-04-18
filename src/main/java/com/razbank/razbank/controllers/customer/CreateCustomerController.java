@@ -55,16 +55,19 @@ public class CreateCustomerController {
         HttpSession session = request.getSession();
 
         SaveCustomerResponse response = saveCustomerService.save(customerDTO, session);
-        if (response.getResponseInfo().getCode() != 0)
-            throw new CreateCustomerException(response.getResponseInfo().getCode() + " ==> " + response.getMessage() + ": ERROR CREATING CUSTOMER: " + customerDTO.toString());
+        if (response.getResponseInfo().getCode() == 0){
+            Customer c = (Customer) request.getSession().getAttribute("SESSION");
+            logger.info("CUSTOMER FROM SESSION: {}", c);
 
-        Customer c = (Customer) request.getSession().getAttribute("SESSION");
-        logger.info("CUSTOMER FROM SESSION: {}", c);
+            Customer customer = response.getCustomer();
+            BeanUtils.copyProperties(customer, customerDTO);
 
-        Customer customer = response.getCustomer();
-        BeanUtils.copyProperties(customer, customerDTO);
+            return new ResponseEntity<>(customerDTO, HttpStatus.CREATED);
+        }else {
+            //throw new CreateCustomerException(response.getResponseInfo().getCode() + " ==> " + response.getMessage() + ": ERROR CREATING CUSTOMER: " + customerDTO.toString());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity<>(customerDTO, HttpStatus.CREATED);
     }
 
     //No utilizar salvo para pruebas. Poner Cascade.ALL para borrar todos los registros

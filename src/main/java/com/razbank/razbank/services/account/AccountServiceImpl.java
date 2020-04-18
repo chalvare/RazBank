@@ -18,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * <h1>Account Service Implementation</h1>
@@ -55,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
      * This service method saves the account in database
      *
      * @param accountDTO object
-     * @return SaveAccountResponse: response of process
+     * @return SaveAccountResponse
      */
     @Override
     public SaveAccountResponse save(AccountDTO accountDTO) {
@@ -71,26 +74,29 @@ public class AccountServiceImpl implements AccountService {
             addAccountCommand.execute();
         } catch (RazBankException e) {
             logger.error("RazBankException", e);
-            response.setAccount(account);
-            response.setCode(e.getResponseInfo().getCode());
-            response.setResponseInfo(e.getResponseInfo());
-            response.setMessage(e.getMessage());
+            buildSaveAccountResponse(response, account, e.getResponseInfo(), e.getMessage());
         }
 
         if (addAccountCommand.isSuccess()) {
-            response.setAccount(account);
-            response.setCode(ResponseInfo.OK.getCode());
-            response.setResponseInfo(ResponseInfo.OK);
+            logger.error("SUCCESS");
+            buildSaveAccountResponse(response, account, ResponseInfo.OK, ResponseInfo.OK.getValue());
         }
 
         return response;
     }
 
+
+    /**
+     * Method which gets accounts using customer id
+     *
+     * @param customerId int
+     * @return GetAccountsResponse
+     */
     @Override
     public GetAccountsResponse findAccountsByCustomerId(int customerId){
         logger.info("SERVICE: {}", CLASSNAME);
         GetAccountsResponse response = new GetAccountsResponse();
-        Account account = null;
+        Account account;
 
         try {
             GetAccountsRequest getAccountsRequest = new GetAccountsRequestImpl();
@@ -100,24 +106,50 @@ public class AccountServiceImpl implements AccountService {
             getAccountsCommand.execute();
         } catch (RazBankException e) {
             logger.error("RazBankException", e);
-            response.setCustomerId(customerId);
-            response.setCode(e.getResponseInfo().getCode());
-            response.setResponseInfo(e.getResponseInfo());
-            response.setMessage(e.getMessage());
+            buildGetAccountsResponse(response, customerId, new ArrayList<>(), e.getResponseInfo(), e.getMessage());
         }
 
         if (getAccountsCommand.isSuccess()) {
-            response.setCustomerId(customerId);
-            response.setAccountList(getAccountsCommand.getAccountList());
-            response.setCode(ResponseInfo.OK.getCode());
-            response.setResponseInfo(ResponseInfo.OK);
+            logger.error("SUCCESS");
+            buildGetAccountsResponse(response, customerId, getAccountsCommand.getAccountList(), ResponseInfo.OK, ResponseInfo.OK.getValue());
         }
+
         return response;
 
     }
 
     /**
-     * Method which built an Account from DTO
+     * Method which builds the command response
+     *
+     * @param response object
+     * @param account object
+     * @param responseInfo object
+     * @param message object
+     */
+    private void buildSaveAccountResponse(SaveAccountResponse response, Account account, ResponseInfo responseInfo, String message) {
+        response.setAccount(account);
+        response.setResponseInfo(responseInfo);
+        response.setMessage(message);
+    }
+
+    /**
+     * Method which builds the command response
+     *
+     * @param response object
+     * @param customerId object
+     * @param accountList object
+     * @param responseInfo object
+     * @param message object
+     */
+    private void buildGetAccountsResponse(GetAccountsResponse response, int customerId, List<Account> accountList, ResponseInfo responseInfo, String message) {
+        response.setCustomerId(customerId);
+        response.setAccountList(accountList);
+        response.setResponseInfo(responseInfo);
+        response.setMessage(message);
+    }
+
+    /**
+     * Method which builds an Account from DTO
      *
      * @param accountDTO object
      * @return Account built with builder pattern

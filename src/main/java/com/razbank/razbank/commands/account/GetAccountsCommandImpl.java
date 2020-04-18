@@ -58,9 +58,10 @@ public class GetAccountsCommandImpl extends GetAccountsCommand {
         List<Account> accounts;
         try {
             accounts = accountRepository.findAccountsByCustomerId(getAccountsRequestImpl.getAccount().getCustomer().getId());
-            this.setSuccess(true);
             this.setAccountList(accounts);
+            this.setSuccess(true);
         } catch (Exception e) {
+            this.setSuccess(false);
             String method = GetAccountsCommandImpl.class.getEnclosingMethod().getName();
             throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, this.accountList);
         }

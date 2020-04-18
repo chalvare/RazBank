@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class GenericResponse {
-    int code;
     ResponseInfo responseInfo;
     String message;
 }
