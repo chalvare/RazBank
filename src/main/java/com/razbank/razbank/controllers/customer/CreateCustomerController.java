@@ -2,7 +2,6 @@ package com.razbank.razbank.controllers.customer;
 
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
 import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.responses.customer.SaveCustomerResponse;
 import com.razbank.razbank.services.customer.SaveCustomerService;
@@ -69,7 +68,7 @@ public class CreateCustomerController {
     @DeleteMapping(value = "/customer/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable @Valid int customerId) {
         Optional<Customer> customer = customerService.findById(customerId);
-        customerService.deleteById(customer.orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId))
+        customerService.deleteById(customer.orElseThrow(() -> new RazBankException("Customer id not found - " + customerId))
                 .getId());
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }

@@ -3,7 +3,7 @@ package com.razbank.razbank.controllers.account;
 import com.razbank.razbank.dtos.account.AccountDTO;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.responses.account.GetAccountsResponse;
 import com.razbank.razbank.responses.account.SaveAccountResponse;
 import com.razbank.razbank.services.account.AccountService;
@@ -47,7 +47,7 @@ public class AccountController {
                                                            @RequestBody AccountDTO accountDTO) {
         Optional<Customer> customer = customerService.findById(customerId);
         accountDTO.setCustomer(customer
-                .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId)));
+                .orElseThrow(() -> new RazBankException("Customer id not found - " + customerId)));
 
         SaveAccountResponse response = accountService.save(accountDTO);
         BeanUtils.copyProperties(response.getAccount(), accountDTO);
