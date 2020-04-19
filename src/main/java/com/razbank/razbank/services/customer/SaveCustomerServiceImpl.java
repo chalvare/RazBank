@@ -72,6 +72,8 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
         }catch(RazBankException e){
             logger.error("RazBankException", e);
             buildSaveCustomerResponse(response, customer, e.getResponseInfo(), e.getMessage());
+            throw new CreateCustomerException(response.getResponseInfo().getCode() + " ==> " +
+                    response.getMessage() + ": ERROR CREATING CUSTOMER: " + response.getCustomer());
         }
 
         if (saveCustomerCommand.isSuccess()) {

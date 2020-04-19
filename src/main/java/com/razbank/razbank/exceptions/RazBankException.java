@@ -16,7 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RazBankException extends Exception {
+public class RazBankException extends RuntimeException {
 
     private final ResponseInfo responseInfo;
     private final String where;

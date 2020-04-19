@@ -48,10 +48,9 @@ public class AddAccountCommandImpl extends AddAccountCommand {
     /**
      * Method which saves account and stablishes account number
      *
-     * @throws RazBankException exception
      */
     @Override
-    public void saveAccount() throws RazBankException {
+    public void saveAccount() {
         Account account = null;
         try {
 
@@ -81,10 +80,9 @@ public class AddAccountCommandImpl extends AddAccountCommand {
     /**
      * Method which executes the command
      *
-     * @throws RazBankException exception
      */
     @Override
-    public void execute() throws RazBankException {
+    public void execute() {
         saveAccount();
     }
 }

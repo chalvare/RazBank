@@ -22,6 +22,7 @@ import java.util.Optional;
 public class AccountController {
     //TODO FALTAN RESPOSES
     //TODO FALTAN COMMENTS
+    //TODO HACER EL VALIDATOR DE LOS CAMPOS DEL DTO. BASARSE EN EL DE CUSTOMER CONTROLLER
     private CustomerService customerService;
     private AccountService accountService;
 
@@ -49,12 +50,8 @@ public class AccountController {
                 .orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId)));
 
         SaveAccountResponse response = accountService.save(accountDTO);
-        if (response.getResponseInfo().getCode() == 0) {
-            BeanUtils.copyProperties(response.getAccount(), accountDTO);
-            return new ResponseEntity<>(accountDTO, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        BeanUtils.copyProperties(response.getAccount(), accountDTO);
+        return new ResponseEntity<>(accountDTO, HttpStatus.CREATED);
 
     }
 

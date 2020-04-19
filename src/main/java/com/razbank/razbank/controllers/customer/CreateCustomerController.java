@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/customer")
 public class CreateCustomerController {
     //TODO FALTAN RESPOSES
     //TODO FALTAN COMMENTS
@@ -36,7 +36,7 @@ public class CreateCustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping(value = "/client/{customerId}")
+    @GetMapping(value = "/customer/{customerId}")
     public ResponseEntity<CustomerDTO> getCustomer(@PathVariable @Valid int customerId) {
         Optional<Customer> customer = customerService.findById(customerId);
         CustomerDTO customerDTO = new CustomerDTO();
@@ -44,7 +44,7 @@ public class CreateCustomerController {
         return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/client")
+    @PostMapping(value = "/customer")
     public ResponseEntity<CustomerDTO> save(@RequestBody @Valid CustomerDTO customerDTO, HttpServletRequest request) {
 
         if (!Validator.validate(customerDTO)) {
@@ -55,23 +55,18 @@ public class CreateCustomerController {
         HttpSession session = request.getSession();
 
         SaveCustomerResponse response = saveCustomerService.save(customerDTO, session);
-        if (response.getResponseInfo().getCode() == 0){
-            Customer c = (Customer) request.getSession().getAttribute("SESSION");
-            logger.info("CUSTOMER FROM SESSION: {}", c);
+        Customer c = (Customer) request.getSession().getAttribute("SESSION");
+        logger.info("CUSTOMER FROM SESSION: {}", c);
 
-            Customer customer = response.getCustomer();
-            BeanUtils.copyProperties(customer, customerDTO);
+        Customer customer = response.getCustomer();
+        BeanUtils.copyProperties(customer, customerDTO);
 
-            return new ResponseEntity<>(customerDTO, HttpStatus.CREATED);
-        }else {
-            //throw new CreateCustomerException(response.getResponseInfo().getCode() + " ==> " + response.getMessage() + ": ERROR CREATING CUSTOMER: " + customerDTO.toString());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(customerDTO, HttpStatus.CREATED);
 
     }
 
     //No utilizar salvo para pruebas. Poner Cascade.ALL para borrar todos los registros
-    @DeleteMapping(value = "/client/{customerId}")
+    @DeleteMapping(value = "/customer/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable @Valid int customerId) {
         Optional<Customer> customer = customerService.findById(customerId);
         customerService.deleteById(customer.orElseThrow(() -> new CustomerNotFoundException("Customer id not found - " + customerId))

@@ -11,7 +11,8 @@ public enum ResponseInfo {
     CONTROLLER_ERROR("CONTROLLER ERROR", 2),
     SERVICE_ERROR("SERVICE ERROR", 3),
     REQUEST_ERROR("REQUEST ERROR", 4),
-    COMMAND_ERROR("COMMAND ERROR", 5);
+    COMMAND_ERROR("COMMAND ERROR", 5),
+    RISK_ENGINE_ERROR("RISK ENGINE ERROR", 6);
 
     private String value;
     private  int code;

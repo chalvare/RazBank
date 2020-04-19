@@ -50,7 +50,7 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
     /**
      * Constructor
      *
-     * @param customerRepository object
+     * @param customerRepository    object
      * @param restrictionRepository object
      */
     @Autowired
@@ -63,10 +63,9 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
     /**
      * Method which saves customer
      *
-     * @throws RazBankException exception
      */
     @Override
-    public void saveCustomer() throws RazBankException {
+    public void saveCustomer()  {
         Customer cust;
         try {
 
@@ -77,22 +76,55 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
                     acc.setAccountNumber((1000 * cust.getAccounts().size()) + cust.getId());
                 }
             }
-            List<RiskEnginesEnum> engines = loadEngines();
-            if (!RiskEngines.crsEnginesExecution(engines, cust)) {
-                Restriction res = Restriction.builder()
-                        .restrictionIdentity(new RestrictionIdentity(cust.getId(), RestrictionEnum.ZCRS.getName()))
-                        .build();
-                restrictionRepository.save(res);
-            }
+
+            addCustomerRestriction(cust);
+
             createCustomerAdultRequestImpl.getSession().setAttribute("SESSION", cust);
             customerRepository.save(cust);
             this.setCustomer(cust);
             this.setSuccess(true);
-        }catch (Exception e){
+
+        } catch (Exception e) {
             this.setSuccess(false);
             String method = SaveCustomerAdultCommandImpl.class.getEnclosingMethod().getName();
             throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, this.customer);
         }
+    }
+
+    /**
+     * Method which add customer restriction
+     *
+     * @param customer object
+     * @exception RazBankException exception
+     */
+    private void addCustomerRestriction(Customer customer){
+        try{
+            List<RiskEnginesEnum> engines = loadEngines();
+            if (!RiskEngines.crsEnginesExecution(engines, customer)) {
+                Restriction res = Restriction.builder()
+                        .restrictionIdentity(new RestrictionIdentity(customer.getId(), RestrictionEnum.ZCRS.getName()))
+                        .build();
+                restrictionRepository.save(res);
+            }
+        }catch (Exception e){
+            this.setSuccess(false);
+            String method = SaveCustomerAdultCommandImpl.class.getEnclosingMethod().getName();
+            throw new RazBankException(e.getMessage(), ResponseInfo.RISK_ENGINE_ERROR, CLASSNAME + ":" + method, customer);
+
+        }
+
+    }
+
+    /**
+     * Method which load the risky engines
+     *
+     * @return List<RiskEnginesEnum>
+     */
+    private List<RiskEnginesEnum> loadEngines() {
+        List<RiskEnginesEnum> engines = new ArrayList<>();
+        engines.add(RiskEnginesEnum.CRS_PHONE);
+        engines.add(RiskEnginesEnum.CRS_ADDRESS);
+        return engines;
     }
 
 
@@ -103,29 +135,16 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
      */
     @Override
     public void setCustomerRequest(CreateCustomerRequest createCustomerRequest) {
-        this.createCustomerAdultRequestImpl= (CreateCustomerAdultRequestImpl) createCustomerRequest;
+        this.createCustomerAdultRequestImpl = (CreateCustomerAdultRequestImpl) createCustomerRequest;
     }
 
     /**
      * Method which executes the command
      *
-     * @throws RazBankException exception
      */
     @Override
-    public void execute() throws RazBankException {
+    public void execute() {
         saveCustomer();
-    }
-
-    /**
-     * Method which load the risky engines
-     *
-     * @return List<RiskEnginesEnum>
-     */
-    private List<RiskEnginesEnum> loadEngines() {
-        List<RiskEnginesEnum> engines =  new ArrayList<>();
-        engines.add(RiskEnginesEnum.CRS_PHONE);
-        engines.add(RiskEnginesEnum.CRS_ADDRESS);
-        return engines;
     }
 
 

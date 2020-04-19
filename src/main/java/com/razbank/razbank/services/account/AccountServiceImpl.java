@@ -75,6 +75,9 @@ public class AccountServiceImpl implements AccountService {
         } catch (RazBankException e) {
             logger.error("RazBankException", e);
             buildSaveAccountResponse(response, account, e.getResponseInfo(), e.getMessage());
+            //TODO Account exception
+            throw new AccountException(response.getResponseInfo().getCode() + " ==> " +
+                    response.getMessage() + ": ERROR CREATING CUSTOMER: " + response.getCustomer());
         }
 
         if (addAccountCommand.isSuccess()) {

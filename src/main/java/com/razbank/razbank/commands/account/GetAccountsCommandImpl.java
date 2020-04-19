@@ -51,10 +51,9 @@ public class GetAccountsCommandImpl extends GetAccountsCommand {
     /**
      * Method which retrieves a list customer's accounts
      *
-     * @throws RazBankException exception
      */
     @Override
-    public void getAccounts() throws RazBankException {
+    public void getAccounts() {
         List<Account> accounts;
         try {
             accounts = accountRepository.findAccountsByCustomerId(getAccountsRequestImpl.getAccount().getCustomer().getId());
@@ -81,10 +80,9 @@ public class GetAccountsCommandImpl extends GetAccountsCommand {
     /**
      * Method which executes the command
      *
-     * @throws RazBankException exception
      */
     @Override
-    public void execute() throws RazBankException {
+    public void execute() {
         getAccounts();
     }
 }
