@@ -5,7 +5,7 @@ import com.razbank.razbank.commands.account.GetAccountsCommandImpl;
 import com.razbank.razbank.dtos.account.AccountDTO;
 import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.RazBankException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequest;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequestImpl;
 import com.razbank.razbank.requests.account.GetAccountsRequest;
@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -73,16 +72,13 @@ public class AccountServiceImpl implements AccountService {
             addAccountCommand.setAccountRequest(addCustomerAccountRequest);
             addAccountCommand.execute();
         } catch (RazBankException e) {
-            logger.error("RazBankException", e);
-            buildSaveAccountResponse(response, account, e.getResponseInfo(), e.getMessage());
-            //TODO Account exception
-            throw new AccountException(response.getResponseInfo().getCode() + " ==> " +
-                    response.getMessage() + ": ERROR CREATING CUSTOMER: " + response.getCustomer());
+            String method = AccountServiceImpl.class.getEnclosingMethod().getName();
+            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, account);
         }
 
         if (addAccountCommand.isSuccess()) {
             logger.error("SUCCESS");
-            buildSaveAccountResponse(response, account, ResponseInfo.OK, ResponseInfo.OK.getValue());
+            buildSaveAccountResponse(response, account, ResponseInfo.OK.getValue());
         }
 
         return response;
@@ -99,7 +95,7 @@ public class AccountServiceImpl implements AccountService {
     public GetAccountsResponse findAccountsByCustomerId(int customerId){
         logger.info("SERVICE: {}", CLASSNAME);
         GetAccountsResponse response = new GetAccountsResponse();
-        Account account;
+        Account account=null;
 
         try {
             GetAccountsRequest getAccountsRequest = new GetAccountsRequestImpl();
@@ -108,13 +104,13 @@ public class AccountServiceImpl implements AccountService {
             getAccountsCommand.setAccountsRequest(getAccountsRequest);
             getAccountsCommand.execute();
         } catch (RazBankException e) {
-            logger.error("RazBankException", e);
-            buildGetAccountsResponse(response, customerId, new ArrayList<>(), e.getResponseInfo(), e.getMessage());
+            String method = AccountServiceImpl.class.getEnclosingMethod().getName();
+            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, account);
         }
 
         if (getAccountsCommand.isSuccess()) {
             logger.error("SUCCESS");
-            buildGetAccountsResponse(response, customerId, getAccountsCommand.getAccountList(), ResponseInfo.OK, ResponseInfo.OK.getValue());
+            buildGetAccountsResponse(response, customerId, getAccountsCommand.getAccountList(), ResponseInfo.OK.getValue());
         }
 
         return response;
@@ -123,31 +119,27 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Method which builds the command response
-     *
-     * @param response object
+     *  @param response object
      * @param account object
-     * @param responseInfo object
      * @param message object
      */
-    private void buildSaveAccountResponse(SaveAccountResponse response, Account account, ResponseInfo responseInfo, String message) {
+    private void buildSaveAccountResponse(SaveAccountResponse response, Account account, String message) {
         response.setAccount(account);
-        response.setResponseInfo(responseInfo);
+        response.setResponseInfo(ResponseInfo.OK);
         response.setMessage(message);
     }
 
     /**
      * Method which builds the command response
-     *
-     * @param response object
+     *  @param response object
      * @param customerId object
      * @param accountList object
-     * @param responseInfo object
      * @param message object
      */
-    private void buildGetAccountsResponse(GetAccountsResponse response, int customerId, List<Account> accountList, ResponseInfo responseInfo, String message) {
+    private void buildGetAccountsResponse(GetAccountsResponse response, int customerId, List<Account> accountList, String message) {
         response.setCustomerId(customerId);
         response.setAccountList(accountList);
-        response.setResponseInfo(responseInfo);
+        response.setResponseInfo(ResponseInfo.OK);
         response.setMessage(message);
     }
 

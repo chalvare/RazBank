@@ -2,8 +2,8 @@ package com.razbank.razbank.controllers.customer;
 
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.customer.CreateCustomerException;
 import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.responses.customer.SaveCustomerResponse;
 import com.razbank.razbank.services.customer.SaveCustomerService;
 import com.razbank.razbank.services.customer.CustomerService;
@@ -49,7 +49,7 @@ public class CreateCustomerController {
 
         if (!Validator.validate(customerDTO)) {
             logger.error("INVALID CUSTOMER: {}", customerDTO);
-            throw new CreateCustomerException("INVALID CUSTOMER: " + customerDTO.toString());
+            throw new RazBankException("INVALID CUSTOMER: " + customerDTO.toString());
         }
 
         HttpSession session = request.getSession();

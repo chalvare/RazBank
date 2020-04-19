@@ -4,7 +4,7 @@ import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.entities.restriction.Restriction;
 import com.razbank.razbank.entities.restriction.RestrictionIdentity;
-import com.razbank.razbank.exceptions.RazBankException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.repositories.customer.CustomerRepository;
 import com.razbank.razbank.repositories.restriction.RestrictionRepository;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
@@ -66,7 +66,7 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
      */
     @Override
     public void saveCustomer()  {
-        Customer cust;
+        Customer cust = null;
         try {
 
             cust = createCustomerAdultRequestImpl.getCustomer();
@@ -87,7 +87,7 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
         } catch (Exception e) {
             this.setSuccess(false);
             String method = SaveCustomerAdultCommandImpl.class.getEnclosingMethod().getName();
-            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, this.customer);
+            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, cust);
         }
     }
 
@@ -110,7 +110,6 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
             this.setSuccess(false);
             String method = SaveCustomerAdultCommandImpl.class.getEnclosingMethod().getName();
             throw new RazBankException(e.getMessage(), ResponseInfo.RISK_ENGINE_ERROR, CLASSNAME + ":" + method, customer);
-
         }
 
     }

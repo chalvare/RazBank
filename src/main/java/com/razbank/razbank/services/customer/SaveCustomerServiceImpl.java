@@ -3,8 +3,7 @@ package com.razbank.razbank.services.customer;
 import com.razbank.razbank.commands.customer.SaveCustomerAdultCommandImpl;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.RazBankException;
-import com.razbank.razbank.exceptions.customer.CreateCustomerException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerChildRequestImpl;
 import com.razbank.razbank.requests.createCustomers.CreateCustomerRequest;
@@ -70,15 +69,12 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
             saveCustomerCommand.setCustomerRequest(customerCreateInfoRequest);
             saveCustomerCommand.execute();
         }catch(RazBankException e){
-            logger.error("RazBankException", e);
-            buildSaveCustomerResponse(response, customer, e.getResponseInfo(), e.getMessage());
-            throw new CreateCustomerException(response.getResponseInfo().getCode() + " ==> " +
-                    response.getMessage() + ": ERROR CREATING CUSTOMER: " + response.getCustomer());
+            throw new RazBankException(e.getMessage(), e.getResponseInfo(), e.getWhere(), customer);
         }
 
         if (saveCustomerCommand.isSuccess()) {
             logger.error("SUCCESS");
-            buildSaveCustomerResponse(response, customer, ResponseInfo.OK, ResponseInfo.OK.getValue());
+            buildSaveCustomerResponse(response, customer, ResponseInfo.OK.getValue());
         }
 
         return response;
@@ -99,21 +95,19 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
             case 2:
                 return new CreateCustomerSMERequestImpl();
             default:
-                throw new CreateCustomerException(CLASSNAME +": ERROR CREATING CUSTOMER: TYPE OF CUSTOMER INVALID.");
+                throw new RazBankException(CLASSNAME +": ERROR CREATING CUSTOMER: TYPE OF CUSTOMER INVALID.");
         }
     }
 
     /**
      * Method which builds the command response
-     *
-     * @param response object
+     *  @param response object
      * @param customer object
-     * @param responseInfo object
      * @param message object
      */
-    private void buildSaveCustomerResponse(SaveCustomerResponse response, Customer customer, ResponseInfo responseInfo, String message) {
+    private void buildSaveCustomerResponse(SaveCustomerResponse response, Customer customer, String message) {
         response.setCustomer(customer);
-        response.setResponseInfo(responseInfo);
+        response.setResponseInfo(ResponseInfo.OK);
         response.setMessage(message);
     }
 

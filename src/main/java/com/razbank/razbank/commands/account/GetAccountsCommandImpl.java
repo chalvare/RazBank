@@ -1,7 +1,7 @@
 package com.razbank.razbank.commands.account;
 
 import com.razbank.razbank.entities.account.Account;
-import com.razbank.razbank.exceptions.RazBankException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.repositories.account.AccountRepository;
 import com.razbank.razbank.requests.account.GetAccountsRequest;
 import com.razbank.razbank.requests.account.GetAccountsRequestImpl;
@@ -54,7 +54,7 @@ public class GetAccountsCommandImpl extends GetAccountsCommand {
      */
     @Override
     public void getAccounts() {
-        List<Account> accounts;
+        List<Account> accounts=null;
         try {
             accounts = accountRepository.findAccountsByCustomerId(getAccountsRequestImpl.getAccount().getCustomer().getId());
             this.setAccountList(accounts);
@@ -62,7 +62,7 @@ public class GetAccountsCommandImpl extends GetAccountsCommand {
         } catch (Exception e) {
             this.setSuccess(false);
             String method = GetAccountsCommandImpl.class.getEnclosingMethod().getName();
-            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, this.accountList);
+            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, accounts);
         }
     }
 

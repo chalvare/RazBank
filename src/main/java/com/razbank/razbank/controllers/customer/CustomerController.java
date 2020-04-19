@@ -1,7 +1,7 @@
 package com.razbank.razbank.controllers.customer;
 
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.exceptions.customer.CustomerNotFoundException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +31,7 @@ public class CustomerController {
     @GetMapping("/customer/{customerId}")
     public Customer getCustomer(@PathVariable int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
-        System.out.println(customer.get().getAccounts());
+        System.out.println(customer.orElseThrow( ()->new RazBankException("Customer id not found - "+customerId)).getAccounts());
         return customer.get();
     }
 
@@ -59,7 +58,7 @@ public class CustomerController {
     @DeleteMapping("/customer/{customerId}")
     public String deleteCustomer(@PathVariable int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
+        customer.orElseThrow( ()->new RazBankException("Customer id not found - "+customerId));
         customerService.deleteById(customerId);
         return "Deleted customer id: " + customerId;
     }

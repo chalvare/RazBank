@@ -16,7 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RazBankException extends RuntimeException {
+public class RazBankExceptionBU extends RuntimeException {
 
     private final ResponseInfo responseInfo;
     private final String where;
@@ -30,12 +30,11 @@ public class RazBankException extends RuntimeException {
      * @param where indicates where error occurs
      * @param param additional information such as object
      */
-    public RazBankException(String message, ResponseInfo responseInfo, String where, Object param) {
+    public RazBankExceptionBU(String message, ResponseInfo responseInfo, String where, Object param) {
         super(message);
         this.responseInfo = responseInfo;
         this.where = where;
         this.param = param;
     }
-
 
 }

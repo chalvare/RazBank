@@ -1,7 +1,7 @@
 package com.razbank.razbank.commands.account;
 
 import com.razbank.razbank.entities.account.Account;
-import com.razbank.razbank.exceptions.RazBankException;
+import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.repositories.account.AccountRepository;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequest;
 import com.razbank.razbank.requests.account.AddCustomerAccountRequestImpl;
