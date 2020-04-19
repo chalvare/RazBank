@@ -1,4 +1,4 @@
-package com.razbank.razbank.entities.contactInformation;
+package com.razbank.razbank.entities.contactinformation;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

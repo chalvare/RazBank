@@ -1,7 +1,7 @@
 package com.razbank.razbank.riskengines.crs;
 
 import com.razbank.razbank.entities.account.Account;
-import com.razbank.razbank.entities.contactInformation.ContactInformation;
+import com.razbank.razbank.entities.contactinformation.ContactInformation;
 import com.razbank.razbank.entities.customer.Customer;
 import lombok.*;
 

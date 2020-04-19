@@ -1,7 +1,8 @@
 package com.razbank.razbank.dtos.customer;
 
 import com.razbank.razbank.entities.account.Account;
-import com.razbank.razbank.entities.contactInformation.ContactInformation;
+import com.razbank.razbank.entities.contactinformation.ContactInformation;
+import com.razbank.razbank.entities.restriction.Restriction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,4 +51,5 @@ public class CustomerDTO implements Serializable {
     @NotNull
     private ContactInformation contactInformation;
 
+    private List<Restriction> restrictions;
 }

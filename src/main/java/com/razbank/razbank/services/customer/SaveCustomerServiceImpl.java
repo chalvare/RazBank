@@ -4,10 +4,10 @@ import com.razbank.razbank.commands.customer.SaveCustomerAdultCommandImpl;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.exceptions.generic.RazBankException;
-import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
-import com.razbank.razbank.requests.createCustomers.CreateCustomerChildRequestImpl;
-import com.razbank.razbank.requests.createCustomers.CreateCustomerRequest;
-import com.razbank.razbank.requests.createCustomers.CreateCustomerSMERequestImpl;
+import com.razbank.razbank.requests.customer.CreateCustomerAdultRequestImpl;
+import com.razbank.razbank.requests.customer.CreateCustomerChildRequestImpl;
+import com.razbank.razbank.requests.customer.CreateCustomerRequest;
+import com.razbank.razbank.requests.customer.CreateCustomerSMERequestImpl;
 import com.razbank.razbank.responses.customer.SaveCustomerResponse;
 import com.razbank.razbank.utils.ResponseInfo;
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
         }
 
         if (saveCustomerCommand.isSuccess()) {
-            logger.error("SUCCESS");
+            logger.info("SUCCESS");
             buildSaveCustomerResponse(response, customer, ResponseInfo.OK.getValue());
         }
 
@@ -130,6 +130,8 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
                .countryCode(customerDTO.getCountryCode())
                .birthDate(customerDTO.getBirthDate())
                .placeOfBirth(customerDTO.getPlaceOfBirth())
-               .contactInformation(customerDTO.getContactInformation()).build();
+               .contactInformation(customerDTO.getContactInformation())
+               .restrictions(customerDTO.getRestrictions())
+               .build();
     }
 }

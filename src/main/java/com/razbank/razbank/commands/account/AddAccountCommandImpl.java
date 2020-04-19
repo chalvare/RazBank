@@ -55,7 +55,7 @@ public class AddAccountCommandImpl extends AddAccountCommand {
         try {
 
             account = addCustomerAccount.getAccount();
-            account.getCustomer().add(account);
+            account.getCustomer().addAccount(account);
             int accountNumber = 1000 * account.getCustomer().getAccounts().size() + account.getCustomer().getId();
             account.setAccountNumber(accountNumber);
             accountRepository.save(account);

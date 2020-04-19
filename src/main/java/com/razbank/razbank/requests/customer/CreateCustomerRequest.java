@@ -1,4 +1,4 @@
-package com.razbank.razbank.requests.createCustomers;
+package com.razbank.razbank.requests.customer;
 
 import com.razbank.razbank.entities.customer.Customer;
 import com.razbank.razbank.requests.Request;

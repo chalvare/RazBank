@@ -7,8 +7,8 @@ import com.razbank.razbank.entities.restriction.RestrictionIdentity;
 import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.repositories.customer.CustomerRepository;
 import com.razbank.razbank.repositories.restriction.RestrictionRepository;
-import com.razbank.razbank.requests.createCustomers.CreateCustomerAdultRequestImpl;
-import com.razbank.razbank.requests.createCustomers.CreateCustomerRequest;
+import com.razbank.razbank.requests.customer.CreateCustomerAdultRequestImpl;
+import com.razbank.razbank.requests.customer.CreateCustomerRequest;
 import com.razbank.razbank.riskengines.RestrictionEnum;
 import com.razbank.razbank.riskengines.RiskEngines;
 import com.razbank.razbank.riskengines.RiskEnginesEnum;
@@ -77,8 +77,8 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
                 }
             }
 
-            addCustomerRestriction(cust);
-
+            List<Restriction>res=addCustomerRestriction(cust);
+            cust.setRestrictions(res);
             createCustomerAdultRequestImpl.getSession().setAttribute("SESSION", cust);
             customerRepository.save(cust);
             this.setCustomer(cust);
@@ -95,23 +95,27 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
      * Method which add customer restriction
      *
      * @param customer object
+     * @return List<Restriction>
      * @exception RazBankException exception
      */
-    private void addCustomerRestriction(Customer customer){
+    private List<Restriction> addCustomerRestriction(Customer customer){
+        List<Restriction> restrictionList = new ArrayList<>();
         try{
             List<RiskEnginesEnum> engines = loadEngines();
             if (!RiskEngines.crsEnginesExecution(engines, customer)) {
                 Restriction res = Restriction.builder()
                         .restrictionIdentity(new RestrictionIdentity(customer.getId(), RestrictionEnum.ZCRS.getName()))
                         .build();
-                restrictionRepository.save(res);
+                restrictionList.add(res);
             }
+
         }catch (Exception e){
             this.setSuccess(false);
             String method = SaveCustomerAdultCommandImpl.class.getEnclosingMethod().getName();
             throw new RazBankException(e.getMessage(), ResponseInfo.RISK_ENGINE_ERROR, CLASSNAME + ":" + method, customer);
         }
 
+        return restrictionList;
     }
 
     /**

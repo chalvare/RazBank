@@ -1,4 +1,4 @@
-package com.razbank.razbank.requests.createCustomers;
+package com.razbank.razbank.requests.customer;
 
 import com.razbank.razbank.entities.customer.Customer;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,11 @@ public class CreateCustomerSMERequestImpl implements CreateCustomerRequest {
 
     @Override
     public void setSession(HttpSession session) {
-
+        //to do
     }
 
     @Override
     public void buildCustomer(Customer customer) {
-
+        //to do
     }
 }

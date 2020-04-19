@@ -2,7 +2,8 @@ package com.razbank.razbank.entities.customer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.razbank.razbank.entities.account.Account;
-import com.razbank.razbank.entities.contactInformation.ContactInformation;
+import com.razbank.razbank.entities.contactinformation.ContactInformation;
+import com.razbank.razbank.entities.restriction.Restriction;
 import lombok.*;
 import lombok.experimental.Tolerate;
 
@@ -63,15 +64,30 @@ public class Customer implements Serializable {
     @JoinColumn(name="contact_information_id")
     private ContactInformation contactInformation;
 
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH})
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Restriction> restrictions;
+
     @Tolerate
     Customer() {}
 
-    public void add(Account account){
+    public void addAccount(Account account){
         if(accounts==null){
             accounts = new ArrayList<>();
         }
         accounts.add(account);
         account.setCustomer(this);
     }
+
+    public void addRestriction(Restriction restriction){
+        if(restrictions==null){
+            restrictions = new ArrayList<>();
+        }
+        restrictions.add(restriction);
+        restriction.setCustomer(this);
+    }
+
 
 }
