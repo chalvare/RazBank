@@ -20,21 +20,42 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**
+ * <h1>Account Controller Implementation</h1>
+ * Class which works as a controller accounts
+ * <p>
+ * <b>Note:</b> N/A
+ *
+ * @author Christian Álvarez
+ * @version 1.0
+ * @since 2020-04-22
+ */
 @RestController
 @RequestMapping("/customer")
 public class CreateCustomerController {
     //TODO FALTAN RESPOSES
-    //TODO FALTAN COMMENTS
     private static final Logger logger = LoggerFactory.getLogger(CreateCustomerController.class);
     private final SaveCustomerService saveCustomerService;
     private final CustomerService customerService;
 
+    /**
+     * Constructor
+     *
+     * @param saveCustomerService object
+     * @param customerService object
+     */
     @Autowired
     public CreateCustomerController(SaveCustomerService saveCustomerService, CustomerService customerService) {
         this.saveCustomerService = saveCustomerService;
         this.customerService = customerService;
     }
 
+    /**
+     * Gets customer with id
+     *
+     * @param customerId object
+     * @return CustomerDTO
+     */
     @GetMapping(value = "/customer/{customerId}")
     public ResponseEntity<CustomerDTO> getCustomer(@PathVariable @Valid int customerId) {
         Optional<Customer> customer = customerService.findById(customerId);
@@ -43,6 +64,13 @@ public class CreateCustomerController {
         return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
 
+    /**
+     * Saves customer
+     *
+     * @param customerDTO object
+     * @param request object
+     * @return CustomerDTO
+     */
     @PostMapping(value = "/customer")
     public ResponseEntity<CustomerDTO> save(@RequestBody @Valid CustomerDTO customerDTO, HttpServletRequest request) {
 
@@ -64,6 +92,12 @@ public class CreateCustomerController {
 
     }
 
+    /**
+     * Deletes customer
+     *
+     * @param customerId object
+     * @return String object
+     */
     //No utilizar salvo para pruebas. Poner Cascade.ALL para borrar todos los registros
     @DeleteMapping(value = "/customer/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable @Valid int customerId) {
@@ -73,6 +107,12 @@ public class CreateCustomerController {
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 
+
+    /**
+     * Destroy session
+     *
+     * @param request object
+     */
     @PostMapping("/invalidate/session")
     public void destroySession(HttpServletRequest request) {
         request.getSession().invalidate();

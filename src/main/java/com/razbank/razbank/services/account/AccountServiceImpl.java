@@ -73,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
             addAccountCommand.execute();
         } catch (RazBankException e) {
             String method = AccountServiceImpl.class.getEnclosingMethod().getName();
-            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, account);
+            throw new RazBankException(e.getMessage(), ResponseInfo.SERVICE_ERROR, CLASSNAME + ":" + method, account);
         }
 
         if (addAccountCommand.isSuccess()) {
@@ -105,7 +105,7 @@ public class AccountServiceImpl implements AccountService {
             getAccountsCommand.execute();
         } catch (RazBankException e) {
             String method = AccountServiceImpl.class.getEnclosingMethod().getName();
-            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, account);
+            throw new RazBankException(e.getMessage(), ResponseInfo.SERVICE_ERROR, CLASSNAME + ":" + method, account);
         }
 
         if (getAccountsCommand.isSuccess()) {
