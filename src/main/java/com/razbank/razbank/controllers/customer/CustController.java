@@ -1,12 +1,19 @@
 package com.razbank.razbank.controllers.customer;
 
+import com.razbank.razbank.entities.customer.Customer;
+import com.razbank.razbank.services.customer.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/customers")
 public class CustController {
-/*
+
     private CustomerService customerService;
 
     @Autowired
@@ -27,7 +34,6 @@ public class CustController {
     @GetMapping("/customer/{customerId}")
     public String getCustomer(@PathVariable int customerId, Model model){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
         System.out.println(customer.get());
         model.addAttribute("customer",customer.get());
 
@@ -56,7 +62,6 @@ public class CustController {
     @GetMapping("/showFormForUpdate")
     public String showFormForUpdateCustomer(@RequestParam("customerId") int customerId, Model model){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
         System.out.println(customer.get());
         model.addAttribute("customer",customer.get());
 
@@ -66,7 +71,6 @@ public class CustController {
     @GetMapping("/delete")
     public String deleteCustomer(@RequestParam("customerId")int customerId){
         Optional<Customer> customer = customerService.findById(customerId);
-        customer.orElseThrow( ()->new CustomerNotFoundException("Customer id not found - "+customerId));
         customerService.deleteById(customerId);
         return "redirect:/customers/list";
     }
@@ -85,5 +89,5 @@ public class CustController {
         return "/customers/list-customers";
 
     }
-*/
+
 }

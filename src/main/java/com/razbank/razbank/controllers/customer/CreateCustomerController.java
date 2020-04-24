@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2020-04-22
  */
-@RestController
+@Controller
 @RequestMapping("/customer")
 public class CreateCustomerController {
     //TODO FALTAN RESPOSES
@@ -117,5 +118,7 @@ public class CreateCustomerController {
     public void destroySession(HttpServletRequest request) {
         request.getSession().invalidate();
     }
+
+
 
 }

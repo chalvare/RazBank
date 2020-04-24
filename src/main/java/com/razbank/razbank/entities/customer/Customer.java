@@ -71,7 +71,7 @@ public class Customer implements Serializable {
     private List<Restriction> restrictions;
 
     @Tolerate
-    Customer() {}
+    public Customer() {}
 
     public void addAccount(Account account){
         if(accounts==null){

@@ -48,6 +48,6 @@ public class ContactInformation implements Serializable {
     private Customer customer;
 
     @Tolerate
-    ContactInformation() {}
+    public ContactInformation() {}
 
 }
