@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+
+<h1>ADD</h1>
+
+<form th:action="@{/customer/saveuno}"
+      th:object="${customerDTO}" method="POST">
+
+    <!-- Add hidden form field to handle update -->
+    <input type="hidden" th:field="*{id}" />
+
+    <input type="text" th:field="*{name}"
+           class="form-control mb-4 col-4" placeholder="First name">
+
+    <input type="text" th:field="*{lastName}"
+           class="form-control mb-4 col-4" placeholder="Last name">
+
+    <button type="submit" class="btn btn-info col-2">Save</button>
+
+</form>
+
+</body>
+</html>

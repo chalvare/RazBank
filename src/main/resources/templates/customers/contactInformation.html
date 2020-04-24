@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>INDEX</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+<body>
+
+<h1>Index</h1>
+<a th:href="@{/customers/list}">customers</a>
+
+<form th:action="@{/customer/savedos}"
+      th:object="${customerDTO}" method="POST">
+
+    <!-- Add hidden form field to handle update -->
+
+
+    <input type="text" th:field="*{email}"
+           class="form-control mb-4 col-4" placeholder="First name">
+
+    <input type="text" th:field="*{country}"
+           class="form-control mb-4 col-4" placeholder="Last name">
+
+    <button type="submit" class="btn btn-info col-2">Save</button>
+
+</form>
+
+
+</body>
+</html>
