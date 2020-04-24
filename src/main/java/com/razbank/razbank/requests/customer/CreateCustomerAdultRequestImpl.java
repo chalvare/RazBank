@@ -22,18 +22,22 @@ public class CreateCustomerAdultRequestImpl implements CreateCustomerRequest {
     public void buildCustomer(Customer customer) {
 
         this.customer = customer;
-        this.accounts=customer.getAccounts();
-        for(Account acc:accounts){
-           acc.setCustomer(this.customer);
+
+        if(customer.getAccounts()!=null) {
+            this.accounts=customer.getAccounts();
+            for (Account acc : accounts) {
+                acc.setCustomer(this.customer);
+            }
+            this.customer.setAccounts(this.accounts);
         }
+
         if(customer.getRestrictions()!=null) {
             this.restrictions = customer.getRestrictions();
             for (Restriction res : restrictions) {
                 res.setCustomer(this.customer);
             }
+            this.customer.setRestrictions(customer.getRestrictions());
         }
-        this.customer.setAccounts(this.accounts);
-        this.customer.setRestrictions(customer.getRestrictions());
 
     }
 

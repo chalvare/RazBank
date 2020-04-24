@@ -10,3 +10,12 @@ body {
 .jumbotron{
   background-color: white;
 }
+
+.logo{
+  width: 135px; height: 66px;
+}
+
+.logomed{
+  width: 345px; height: 345px;
+
+}

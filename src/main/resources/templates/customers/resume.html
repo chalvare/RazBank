@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Christian Álvare Sanchez">
+
+    <title>Raz Bank</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"
+          href="../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" th:href="@{/css/heroic-features.css}" href="../../static/css/heroic-features.css"/>
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
+    <div class="container">
+        <img class="logo img-rounded rounded mx-auto d-block" alt="logo"
+             src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
+        <a class="navbar-brand" href="#">&nbsp; Raz Bank</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- Page Content -->
+<div class="container">
+    <br><br>
+    <!-- /.container -->
+    <!--/*@thymesVar id="customerDTO" type="com.razbank.razbank.dtos.customer.CustomerDTO"*/-->
+    <form class="needs-validation" novalidate th:action="@{/customer/customer}" th:object="${customerDTO}"
+          method="POST"><h3><span class="badge badge-primary">Resumen</span></h3>
+        <div class="card ">
+            <div class="card-header text-white bg-info">
+                Datos personales
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="name">Nombre</label>
+                        <input type="text" th:field="*{name}" th:placeholder="${customerDTO.name}" class="form-control" id="name" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="lastName">Apellido</label>
+                        <input type="text" th:field="*{lastName}" th:placeholder="${customerDTO.lastName}" class="form-control" id="lastName" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="email">Email</label>
+                        <input type="email" th:field="*{email}" th:placeholder="${customerDTO.email}" class="form-control" id="email"  readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="birthDate">Fecha de Nacimiento</label>
+                        <input type="text" th:field="*{birthDate}" th:placeholder="${customerDTO.birthDate}" class="form-control" id="birthDate"  readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="placeOfBirth">Lugar de nacimiento</label>
+                        <input type="text" th:field="*{placeOfBirth}"  th:placeholder="${customerDTO.placeOfBirth}" class="form-control" id="placeOfBirth" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="country">País</label>
+                        <input type="text" th:field="*{country}" th:placeholder="${customerDTO.country}" class="form-control" id="country"  readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="card ">
+            <div class="card-header text-white bg-info">
+                Contact Information
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="addressType">Tipo de dirección</label>
+                        <input type="number" th:field="*{contactInformation.addressType}" th:placeholder="${customerDTO.contactInformation.addressType}" class="form-control" id="addressType" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="address">Dirección</label>
+                        <input type="text" th:field="*{contactInformation.address}" th:placeholder="${customerDTO.contactInformation.address}" class="form-control" id="address"  readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="addressNumber">Número</label>
+                        <input type="text" th:field="*{contactInformation.addressNumber}" th:placeholder="${customerDTO.contactInformation.addressNumber}" class="form-control" id="addressNumber" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="city">Ciudad</label>
+                        <input type="text" th:field="*{contactInformation.city}" th:placeholder="${customerDTO.contactInformation.city}" class="form-control" id="city"  readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="postalCode">Código postal</label>
+                        <input type="text" th:field="*{contactInformation.postalCode}" th:placeholder="${customerDTO.contactInformation.postalCode}" class="form-control" id="postalCode" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="country2">País</label>
+                        <input type="text" th:field="*{contactInformation.country}" th:placeholder="${customerDTO.contactInformation.country}" class="form-control" id="country2"  readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="phone">Teléfono</label>
+                        <input class="form-control" id="phone" readonly th:field="*{contactInformation.phone}" th:placeholder="${customerDTO.contactInformation.phone}" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                    Acepto las condiciones
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Quiero ser cliente</button>
+    </form>
+
+
+</div>
+
+<br><br>
+<!-- Footer -->
+<footer class="py-5  bg-info">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Christian Álvarez 2020</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+
+</body>
+</html>

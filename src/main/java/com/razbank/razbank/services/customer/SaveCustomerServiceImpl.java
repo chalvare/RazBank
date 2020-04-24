@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 /**
  * <h1>Save customer Service Implementation</h1>
@@ -62,6 +63,12 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
         Customer customer = null;
 
         try {
+            customerDTO.setTypeCustomer(0);
+            customerDTO.setCreateDate("2020-12-12");
+            customerDTO.setCountryCode("ES");
+            customerDTO.setAccounts(new ArrayList<>());
+            customerDTO.setRestrictions(new ArrayList<>());
+
             CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customerDTO.getTypeCustomer());
             customer = buildCustomer(customerDTO);
             customerCreateInfoRequest.setSession(this.session);
