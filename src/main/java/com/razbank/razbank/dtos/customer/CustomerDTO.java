@@ -27,10 +27,8 @@ public class CustomerDTO implements Serializable {
     @NotNull
     private String email;
 
-    @NotNull
     private String createDate;
 
-    @NotNull
     private int typeCustomer;
 
     @NotNull
@@ -42,13 +40,10 @@ public class CustomerDTO implements Serializable {
     @NotNull
     private String country;
 
-    @NotNull
     private String countryCode;
 
-    @NotNull
     private List<Account> accounts;
 
-    @NotNull
     private ContactInformation contactInformation;
 
     private List<Restriction> restrictions;

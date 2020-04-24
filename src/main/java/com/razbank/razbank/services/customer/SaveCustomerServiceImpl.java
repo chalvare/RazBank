@@ -16,7 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * <h1>Save customer Service Implementation</h1>
@@ -63,16 +67,12 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
         Customer customer = null;
 
         try {
-            customerDTO.setTypeCustomer(0);
-            customerDTO.setCreateDate("2020-12-12");
-            customerDTO.setCountryCode("ES");
-            customerDTO.setAccounts(new ArrayList<>());
-            customerDTO.setRestrictions(new ArrayList<>());
-
-            CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customerDTO.getTypeCustomer());
             customer = buildCustomer(customerDTO);
+
+            CreateCustomerRequest customerCreateInfoRequest = typeOfCustomer(customer.getTypeCustomer());
             customerCreateInfoRequest.setSession(this.session);
             customerCreateInfoRequest.buildCustomer(customer);
+
             saveCustomerCommand.setCustomerRequest(customerCreateInfoRequest);
             saveCustomerCommand.execute();
         }catch(RazBankException e){
@@ -126,19 +126,22 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
      * @return Customer
      */
     private Customer buildCustomer(CustomerDTO customerDTO){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
        return Customer.builder()
                .name(customerDTO.getName())
                .lastName(customerDTO.getLastName())
                .email(customerDTO.getEmail())
-               .createDate(customerDTO.getCreateDate())
-               .typeCustomer(customerDTO.getTypeCustomer())
-               .accounts(customerDTO.getAccounts())
+               .createDate(dateFormat.format(new Date()))
+               .typeCustomer(0)
+               .accounts(new ArrayList<>())
                .country(customerDTO.getCountry())
-               .countryCode(customerDTO.getCountryCode())
+               .countryCode(Locale.getDefault().getCountry())
                .birthDate(customerDTO.getBirthDate())
                .placeOfBirth(customerDTO.getPlaceOfBirth())
                .contactInformation(customerDTO.getContactInformation())
-               .restrictions(customerDTO.getRestrictions())
+               .restrictions(new ArrayList<>())
                .build();
     }
 }

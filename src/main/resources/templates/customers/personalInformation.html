@@ -26,7 +26,7 @@
     <div class="container">
         <br>
         <!-- /.container -->
-        <img class="logomed img-rounded rounded mx-auto d-block" alt="logo"  src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
+        <img class="logo img-rounded rounded mx-auto d-block" alt="logo"  src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
         <a class="navbar-brand" href="#">&nbsp; Raz Bank</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +57,7 @@
 <div class="container">
 <br>
 <!-- /.container -->
-    <img class="img-rounded rounded mx-auto d-block" alt="logo" src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
+    <img class="logo img-rounded rounded mx-auto d-block" alt="logo" src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
     <!--/*@thymesVar id="customerDTO" type="com.razbank.razbank.dtos.customer.CustomerDTO"*/-->
     <form class="needs-validation" novalidate  th:action="@{/onBoarding/savePersonalData}"
           th:object="${customerDTO}" method="POST">

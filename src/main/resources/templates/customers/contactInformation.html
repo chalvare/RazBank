@@ -58,7 +58,7 @@
 <div class="container">
     <br>
     <!-- /.container -->
-    <img class="logomed img-rounded rounded mx-auto d-block" alt="logo"  src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
+    <img class="logo img-rounded rounded mx-auto d-block" alt="logo"  src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
     <!--/*@thymesVar id="contactInformationDTO" type="com.razbank.razbank.dtos.contactInformation.ContactInformationDTO"*/-->
     <form class="needs-validation" novalidate  th:action="@{/onBoarding/saveContactInformation}" th:object="${contactInformationDTO}" method="POST">
         <input type="hidden" th:field="*{id}" />

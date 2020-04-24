@@ -75,10 +75,10 @@ public class CreateCustomerController {
     @PostMapping(value = "/customer")
     public ResponseEntity<CustomerDTO> save(@ModelAttribute("customerDTO") CustomerDTO customerDTO, HttpServletRequest request) {
 
-        /*if (!Validator.validate(customerDTO)) {
+        if (!Validator.validate(customerDTO)) {
             logger.error("INVALID CUSTOMER: {}", customerDTO);
             throw new RazBankException("INVALID CUSTOMER: " + customerDTO.toString());
-        }*/
+        }
 
         HttpSession session = request.getSession();
 
