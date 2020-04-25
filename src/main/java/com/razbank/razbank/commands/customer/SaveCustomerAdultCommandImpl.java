@@ -6,7 +6,6 @@ import com.razbank.razbank.entities.restriction.Restriction;
 import com.razbank.razbank.entities.restriction.RestrictionIdentity;
 import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.repositories.customer.CustomerRepository;
-import com.razbank.razbank.repositories.restriction.RestrictionRepository;
 import com.razbank.razbank.requests.customer.CreateCustomerAdultRequestImpl;
 import com.razbank.razbank.requests.customer.CreateCustomerRequest;
 import com.razbank.razbank.riskengines.RestrictionEnum;
@@ -42,7 +41,6 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
     private static final Logger logger = LoggerFactory.getLogger(SaveCustomerAdultCommandImpl.class);
 
     private final CustomerRepository customerRepository;
-    private final RestrictionRepository restrictionRepository;
     private CreateCustomerAdultRequestImpl createCustomerAdultRequestImpl;
     private Customer customer;
     private boolean success;
@@ -51,18 +49,16 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
      * Constructor
      *
      * @param customerRepository    object
-     * @param restrictionRepository object
      */
     @Autowired
     public SaveCustomerAdultCommandImpl(/*@Qualifier("createCustomerAdultRequestImpl") CreateCustomerRequest customerCreateInfoRequest,*/
-            CustomerRepository customerRepository, RestrictionRepository restrictionRepository) {
+            CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.restrictionRepository = restrictionRepository;
     }
 
     /**
      * Method which saves customer
-     *
+     * @exception RazBankException exception
      */
     @Override
     public void saveCustomer()  {

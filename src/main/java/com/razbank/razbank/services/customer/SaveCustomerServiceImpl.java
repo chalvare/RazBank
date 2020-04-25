@@ -2,7 +2,9 @@ package com.razbank.razbank.services.customer;
 
 import com.razbank.razbank.commands.customer.SaveCustomerAdultCommandImpl;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
+import com.razbank.razbank.entities.account.Account;
 import com.razbank.razbank.entities.customer.Customer;
+import com.razbank.razbank.entities.restriction.Restriction;
 import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.requests.customer.CreateCustomerAdultRequestImpl;
 import com.razbank.razbank.requests.customer.CreateCustomerChildRequestImpl;
@@ -20,6 +22,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -126,22 +129,22 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
      * @return Customer
      */
     private Customer buildCustomer(CustomerDTO customerDTO){
-
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-       return Customer.builder()
+        List<Account> accounts= customerDTO.getAccounts()!=null ? customerDTO.getAccounts(): new ArrayList<>();
+        List<Restriction> restrictions= customerDTO.getRestrictions()!=null ? customerDTO.getRestrictions(): new ArrayList<>();
+        return Customer.builder()
                .name(customerDTO.getName())
                .lastName(customerDTO.getLastName())
                .email(customerDTO.getEmail())
                .createDate(dateFormat.format(new Date()))
                .typeCustomer(0)
-               .accounts(new ArrayList<>())
+               .accounts(accounts)
                .country(customerDTO.getCountry())
                .countryCode(Locale.getDefault().getCountry())
                .birthDate(customerDTO.getBirthDate())
                .placeOfBirth(customerDTO.getPlaceOfBirth())
                .contactInformation(customerDTO.getContactInformation())
-               .restrictions(new ArrayList<>())
+               .restrictions(restrictions)
                .build();
     }
 }

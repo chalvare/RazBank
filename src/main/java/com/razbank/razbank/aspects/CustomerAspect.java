@@ -8,11 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Aspect
 @Component
 public class CustomerAspect {
 
-    private final static Logger logger = LoggerFactory.getLogger(CustomerAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomerAspect.class);
 
     //setup point declarations
     @Pointcut("execution(* com.razbank.razbank.controllers.customer.*.*(..))")
@@ -34,7 +33,7 @@ public class CustomerAspect {
 
         String method= joinpoint.getSignature().toShortString();
 
-        logger.info("=====>> in @Before: calling method: "+method);
+        logger.info("=====>> in @Before: calling method: {}",method);
 
         //display method arguments
         Object[] args = joinpoint.getArgs();
@@ -51,22 +50,21 @@ public class CustomerAspect {
     @Around("forAppFlow()")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         String method = proceedingJoinPoint.getSignature().toShortString();
-        logger.info("===>>> Executing @Around on method "+method);
+        logger.info("===>>> Executing @Around on method {}",method);
 
         long begin=System.currentTimeMillis();
         Object result;
         try {
             result = proceedingJoinPoint.proceed();
         }catch (Exception e){
-            logger.error(e.getMessage());
             logger.error(e.getMessage(), e);
-            result ="Error in Customer process";
-            //throw e;
+            logger.error("Error in Customer process");
+            throw e;
         }
         long end=System.currentTimeMillis();
 
         long duration = end-begin;
-        logger.info("=======>> Duration: "+duration+" miliseconds");
+        logger.info("=======>> Duration: {} miliseconds",duration);
         return result;
     }
 
@@ -74,7 +72,7 @@ public class CustomerAspect {
     @After("forAppFlow()")
     public void after(JoinPoint theJoinPoint){
         String method = theJoinPoint.getSignature().toShortString();
-        logger.info("===>>> Executing @AFTER on method "+method);
+        logger.info("===>>> Executing @AFTER on method {}",method);
 
     }
 
@@ -83,16 +81,16 @@ public class CustomerAspect {
     public void afterReturning(JoinPoint joinPoint, Object result){
         //display method we are calling
         String method= joinPoint.getSignature().toShortString();
-        logger.info("=====>> in @AfterReturning: from method: "+method);
+        logger.info("=====>> in @AfterReturning: from method: {}",method);
         //display the arguments to the method
-        logger.info("=======>> result: "+result);
+        logger.info("=======>> result: {}",result);
     }
 
     @AfterThrowing(pointcut = "forControllerPackage()", throwing = "theExc")
     public void afterThrowing(JoinPoint theJoinPoint, Throwable theExc ){
         String method = theJoinPoint.getSignature().toShortString();
-        logger.info("===>>> Executing @afterThrowing on method "+method);
-        logger.info("===>>> the exception is:  "+theExc);
+        logger.info("===>>> Executing @afterThrowing on method {}",method);
+        logger.info("===>>> the exception is: {0}",theExc);
 
     }
 
