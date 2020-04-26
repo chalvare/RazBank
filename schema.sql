@@ -72,3 +72,17 @@ CREATE TABLE `account`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = latin1;
+
+
+DROP TABLE IF EXISTS `otp`;
+
+CREATE TABLE `otp`
+(
+    `id`          int(11)     NOT NULL AUTO_INCREMENT,
+    `customer_id` int(11)     NOT NULL,
+    `phone`       varchar(20) NOT NULL,
+    `otp_code`    varchar(4)  NOT NULL,
+    `expiry_time` long        NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
