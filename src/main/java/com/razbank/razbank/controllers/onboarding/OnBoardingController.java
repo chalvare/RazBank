@@ -1,4 +1,4 @@
-package com.razbank.razbank.controllers;
+package com.razbank.razbank.controllers.onboarding;
 
 import com.razbank.razbank.dtos.contactInformation.ContactInformationDTO;
 import com.razbank.razbank.dtos.customer.CustomerDTO;
@@ -37,11 +37,11 @@ public class OnBoardingController {
 
     @PostMapping("/saveContactInformation")
     public String saveContactInformation(@ModelAttribute("contactInformationDTO") ContactInformationDTO contactInformationDTO, HttpServletRequest request, Model model){
-        CustomerDTO customerDTO= (CustomerDTO) request.getSession().getAttribute(SESSION);
+        HttpSession session = request.getSession();
+        CustomerDTO customerDTO= (CustomerDTO) session.getAttribute(SESSION);
         ContactInformation contactInformation = ContactInformation.builder().build();
         BeanUtils.copyProperties(contactInformationDTO, contactInformation);
         customerDTO.setContactInformation(contactInformation);
-        HttpSession session = request.getSession();
         session.setAttribute(SESSION, customerDTO);
         CustomerDTO customer3= (CustomerDTO) request.getSession().getAttribute(SESSION);
         model.addAttribute("customerDTO", customer3);

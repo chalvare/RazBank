@@ -84,7 +84,7 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
 
         if (saveCustomerCommand.isSuccess()) {
             logger.info("SUCCESS");
-            buildSaveCustomerResponse(response, customer, ResponseInfo.OK.getValue());
+            response.buildSaveCustomerResponse(response, customer, ResponseInfo.OK.getValue());
         }
 
         return response;
@@ -108,19 +108,6 @@ public class SaveCustomerServiceImpl implements SaveCustomerService {
                 throw new RazBankException(CLASSNAME +": ERROR CREATING CUSTOMER: TYPE OF CUSTOMER INVALID.");
         }
     }
-
-    /**
-     * Method which builds the command response
-     *  @param response object
-     * @param customer object
-     * @param message object
-     */
-    private void buildSaveCustomerResponse(SaveCustomerResponse response, Customer customer, String message) {
-        response.setCustomer(customer);
-        response.setResponseInfo(ResponseInfo.OK);
-        response.setMessage(message);
-    }
-
 
     /**
      * Method which builds an Customer from DTO

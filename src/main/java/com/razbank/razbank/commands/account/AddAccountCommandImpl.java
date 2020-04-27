@@ -33,6 +33,7 @@ public class AddAccountCommandImpl extends AddAccountCommand {
 
     private final AccountRepository accountRepository;
     private AddCustomerAccountRequestImpl addCustomerAccount;
+    private Account account;
     private boolean success;
 
     /**
@@ -51,19 +52,20 @@ public class AddAccountCommandImpl extends AddAccountCommand {
      */
     @Override
     public void saveAccount() {
-        Account account = null;
+        Account acc = null;
         try {
 
-            account = addCustomerAccount.getAccount();
-            account.getCustomer().addAccount(account);
-            int accountNumber = 1000 * account.getCustomer().getAccounts().size() + account.getCustomer().getId();
-            account.setAccountNumber(accountNumber);
-            accountRepository.save(account);
+            acc = addCustomerAccount.getAccount();
+            acc.getCustomer().addAccount(acc);
+            int accountNumber = 1000 * acc.getCustomer().getAccounts().size() + acc.getCustomer().getId();
+            acc.setAccountNumber(accountNumber);
+            accountRepository.save(acc);
+            this.setAccount(acc);
             this.setSuccess(true);
         } catch (Exception e) {
             this.setSuccess(false);
             String method = AddAccountCommandImpl.class.getEnclosingMethod().getName();
-            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, account);
+            throw new RazBankException(e.getMessage(), ResponseInfo.COMMAND_ERROR, CLASSNAME + ":" + method, acc);
         }
     }
 

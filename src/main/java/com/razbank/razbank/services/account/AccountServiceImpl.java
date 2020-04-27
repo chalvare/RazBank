@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
 
         if (addAccountCommand.isSuccess()) {
             logger.error("SUCCESS");
-            buildSaveAccountResponse(response, account, ResponseInfo.OK.getValue());
+            response.buildSaveAccountResponse(response, account, ResponseInfo.OK.getValue());
         }
 
         return response;
@@ -110,37 +110,11 @@ public class AccountServiceImpl implements AccountService {
 
         if (getAccountsCommand.isSuccess()) {
             logger.error("SUCCESS");
-            buildGetAccountsResponse(response, customerId, getAccountsCommand.getAccountList(), ResponseInfo.OK.getValue());
+            response.buildGetAccountsResponse(response, customerId, getAccountsCommand.getAccountList(), ResponseInfo.OK.getValue());
         }
 
         return response;
 
-    }
-
-    /**
-     * Method which builds the command response
-     *  @param response object
-     * @param account object
-     * @param message object
-     */
-    private void buildSaveAccountResponse(SaveAccountResponse response, Account account, String message) {
-        response.setAccount(account);
-        response.setResponseInfo(ResponseInfo.OK);
-        response.setMessage(message);
-    }
-
-    /**
-     * Method which builds the command response
-     *  @param response object
-     * @param customerId object
-     * @param accountList object
-     * @param message object
-     */
-    private void buildGetAccountsResponse(GetAccountsResponse response, int customerId, List<Account> accountList, String message) {
-        response.setCustomerId(customerId);
-        response.setAccountList(accountList);
-        response.setResponseInfo(ResponseInfo.OK);
-        response.setMessage(message);
     }
 
     /**

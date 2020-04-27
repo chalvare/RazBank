@@ -83,7 +83,7 @@ public class CreateCustomerController {
         HttpSession session = request.getSession();
 
         SaveCustomerResponse response = saveCustomerService.save(customerDTO, session);
-        Customer c = (Customer) request.getSession().getAttribute("SESSION");
+        Customer c = (Customer) session.getAttribute("SESSION");
         logger.info("CUSTOMER FROM SESSION: {}", c);
 
         Customer customer = response.getCustomer();

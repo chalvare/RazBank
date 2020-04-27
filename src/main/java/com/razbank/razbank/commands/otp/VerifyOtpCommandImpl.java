@@ -21,8 +21,10 @@ public class VerifyOtpCommandImpl extends VerifyOtpCommand {
     private static final String CLASSNAME = VerifyOtpCommandImpl.class.getSimpleName();
     private static final Logger logger = LoggerFactory.getLogger(VerifyOtpCommandImpl.class);
 
+
     private final OtpRepository otpRepository;
     private VerifyOtpRequestImpl verifyOtpRequest;
+    private Otp otp;
     private boolean success;
 
     @Autowired
@@ -32,16 +34,17 @@ public class VerifyOtpCommandImpl extends VerifyOtpCommand {
 
     @Override
     public void verifyOtp() {
-        Otp otp = null;
+        Otp ot;
         try {
-            otp = verifyOtpRequest.getOtp();
-            final int id = otp.getCustomerId();
+            ot = verifyOtpRequest.getOtp();
+            final int id = ot.getCustomerId();
             Otp otpDB = otpRepository.findFirstByCustomerIdOrderByExpiryTimeDesc(id)
                     .orElseThrow(() -> new RazBankException("Customer id not found - " + id));
 
-            if (checkOtp(otp, otpDB)) {
+            if (checkOtp(ot, otpDB)) {
                 long deletedRows = otpRepository.deleteByCustomerId(id);
                 logger.info("OTP - number of deleted records: {}",deletedRows);
+                this.setOtp(ot);
                 this.setSuccess(true);
             } else {
                 this.setSuccess(false);

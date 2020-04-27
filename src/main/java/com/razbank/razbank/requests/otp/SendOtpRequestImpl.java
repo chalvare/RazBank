@@ -11,7 +11,7 @@ public class SendOtpRequestImpl implements SendOtpRequest {
     private Otp otp;
 
     @Override
-    public void buildOtp(Otp otp) {
+    public void setOtp(Otp otp) {
         this.otp=otp;
     }
 }
