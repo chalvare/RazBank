@@ -2,12 +2,9 @@ package com.razbank.razbank.controllers.otp;
 
 import com.razbank.razbank.dtos.otp.OtpDTO;
 import com.razbank.razbank.entities.customer.Customer;
-import com.razbank.razbank.entities.otp.Otp;
 import com.razbank.razbank.responses.otp.SaveOtpResponse;
 import com.razbank.razbank.responses.otp.VerifyOtpResponse;
 import com.razbank.razbank.services.otp.OtpServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,13 +23,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author Christian Álvarez
  * @version 1.0
- * @since 2020-04-22
+ * @since 2020-04-26
  */
 @Controller
 @RequestMapping("/otp")
 public class OtpController {
 
-    private static final Logger logger = LoggerFactory.getLogger(OtpController.class);
     private static final String SESSION = "SESSION";
     private OtpServiceImpl otpServiceImpl;
 
@@ -51,28 +47,41 @@ public class OtpController {
     public String sendOtp(HttpServletRequest request) {
         Customer c = getCustomerFromSession(request);
         OtpDTO otpDTO = new OtpDTO();
-        //otpDTO.setCustomerId(c.getId());
-        //otpDTO.setPhone(c.getContactInformation().getPhone());
+        otpDTO.setCustomerId(c.getId());
+        otpDTO.setPhone(c.getContactInformation().getPhone());
         SaveOtpResponse response = otpServiceImpl.save(otpDTO);
-        if(response.getResponseInfo().getCode()==0){
+        if (response.getResponseInfo().getCode() == 0) {
             return "OK";
-        }else{
+        } else {
             return "KO";
         }
     }
 
+    /**
+     * Method which verify and delete otp from customer in database
+     *
+     * @param otp     string
+     * @param request HttpServletRequest
+     * @return String
+     */
     @DeleteMapping("/otp")
     public String verifyOtp(@RequestBody String otp, HttpServletRequest request) {
         Customer c = getCustomerFromSession(request);
-        VerifyOtpResponse response = otpServiceImpl.verify(otp,c.getId());
-        if(response.getResponseInfo().getCode()==0){
+        VerifyOtpResponse response = otpServiceImpl.verify(otp, c.getId());
+        if (response.getResponseInfo().getCode() == 0) {
             return "OK";
-        }else{
+        } else {
             return "KO";
         }
 
     }
 
+    /**
+     * Method which gets customer from session
+     *
+     * @param request HttpServletRequest
+     * @return Customer object
+     */
     private Customer getCustomerFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         return (Customer) session.getAttribute(SESSION);
