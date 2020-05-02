@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/otp")
 public class OtpController {
-
+    //TODO Configurar el controller de otp para usarlo despues de la contraseña en el onboarding
     private static final String SESSION = "SESSION";
     private OtpServiceImpl otpServiceImpl;
 

@@ -1,6 +1,5 @@
 package com.razbank.razbank.services.otp;
 
-import com.google.common.base.Verify;
 import com.razbank.razbank.commands.otp.SendOtpCommandImpl;
 import com.razbank.razbank.commands.otp.VerifyOtpCommandImpl;
 import com.razbank.razbank.dtos.otp.OtpDTO;
@@ -18,7 +17,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * <h1>Otp Service Implementation</h1>
+ * Class which works as a controller service
+ * <p>
+ * <b>Note:</b> N/A
+ *
+ * @author Christian Álvarez
+ * @version 1.0
+ * @since 2020-04-26
+ */
 @Service
 public class OtpServiceImpl implements OptService{
 
@@ -28,12 +36,24 @@ public class OtpServiceImpl implements OptService{
     private final SendOtpCommandImpl sendOtpCommand;
     private final VerifyOtpCommandImpl verifyOtpCommand;
 
+    /**
+     * Constructor
+     *
+     * @param sendOtpCommand object
+     * @param verifyOtpCommand object
+     */
     @Autowired
     public OtpServiceImpl(SendOtpCommandImpl sendOtpCommand, VerifyOtpCommandImpl verifyOtpCommand) {
         this.sendOtpCommand = sendOtpCommand;
         this.verifyOtpCommand = verifyOtpCommand;
     }
 
+    /**
+     * Service which saves otp in database and sends otp to customer
+     *
+     * @param otpDTO object
+     * @return saveOtpResponse of service
+     */
     @Override
     public SaveOtpResponse save(OtpDTO otpDTO) {
         logger.info("SERVICE: {}", CLASSNAME);
@@ -41,7 +61,7 @@ public class OtpServiceImpl implements OptService{
         Otp otp=null;
         try {
             SendOtpRequest sendOtpRequest = new SendOtpRequestImpl();
-            //otp = buildOtp(otpDTO);
+            //otp = buildOtp(otpDTO);//TODO descomentar esto y eliminar lo de abajo
             otp=Otp.builder().id(1).phone("+34676658224").expiryTime(1234567890L).build();
             sendOtpRequest.setOtp(otp);
             sendOtpCommand.setSendOtpRequest(sendOtpRequest);
@@ -63,7 +83,13 @@ public class OtpServiceImpl implements OptService{
     }
 
 
-
+    /**
+     * Service which verifies otp from customer
+     *
+     * @param otpCode object
+     * @param customerId object
+     * @return verifyOtpResponse
+     */
     @Override
     public VerifyOtpResponse verify(String otpCode, int customerId ) {
         logger.info("SERVICE: {}", CLASSNAME);
@@ -92,6 +118,12 @@ public class OtpServiceImpl implements OptService{
 
     }
 
+    /**
+     * Otp builder
+     *
+     * @param otpDTO object
+     * @return Otp
+     */
     private Otp buildOtp(OtpDTO otpDTO) {
         return Otp.builder()
                 .customerId(otpDTO.getCustomerId())
@@ -99,6 +131,13 @@ public class OtpServiceImpl implements OptService{
                 .build();
     }
 
+    /**
+     * Otp builder
+     *
+     * @param otpCode object
+     * @param customerId object
+     * @return Otp
+     */
     private Otp buildOtp(String otpCode, int customerId) {
         return Otp.builder()
                 .customerId(customerId)
