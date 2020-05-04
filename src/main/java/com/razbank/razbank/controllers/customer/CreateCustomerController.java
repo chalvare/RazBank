@@ -2,6 +2,7 @@ package com.razbank.razbank.controllers.customer;
 
 import com.razbank.razbank.dtos.customer.CustomerDTO;
 import com.razbank.razbank.entities.customer.Customer;
+import com.razbank.razbank.entities.login.User;
 import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.responses.customer.SaveCustomerResponse;
 import com.razbank.razbank.services.customer.SaveCustomerService;
@@ -81,9 +82,9 @@ public class CreateCustomerController {
         }
 
         HttpSession session = request.getSession();
-
+        User user = (User) session.getAttribute("USER");//todo mirar como guardar la pass despues del usuario para tener el id
         SaveCustomerResponse response = saveCustomerService.save(customerDTO, session);
-        Customer c = (Customer) session.getAttribute("SESSION");
+        CustomerDTO c = (CustomerDTO) session.getAttribute("SESSION");
         logger.info("CUSTOMER FROM SESSION: {}", c);
 
         Customer customer = response.getCustomer();

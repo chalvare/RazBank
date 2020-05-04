@@ -67,6 +67,7 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
 
             cust = createCustomerAdultRequestImpl.getCustomer();
             cust = customerRepository.save(cust);
+            cust.getAccounts().add(Account.builder().customer(cust).build());
             for (Account acc : cust.getAccounts()) {
                 if (acc.getAccountNumber() == 0) {
                     acc.setAccountNumber((1000 * cust.getAccounts().size()) + cust.getId());
@@ -75,8 +76,7 @@ public class SaveCustomerAdultCommandImpl extends SaveCustomerCommand {
 
             List<Restriction>res=addCustomerRestriction(cust);
             cust.setRestrictions(res);
-            createCustomerAdultRequestImpl.getSession().setAttribute("SESSION", cust);
-            customerRepository.save(cust);
+            cust = customerRepository.save(cust);
             this.setCustomer(cust);
             this.setSuccess(true);
 

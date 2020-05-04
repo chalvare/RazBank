@@ -86,3 +86,53 @@ CREATE TABLE `otp`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
+
+
+DROP TABLE IF EXISTS `roles`;
+
+CREATE TABLE `roles`
+(
+    `role_id` int(11)     NOT NULL,
+    `role`    varchar(20) NOT NULL,
+    PRIMARY KEY (`role_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+
+
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user`
+(
+    `customer_id` int(11) NOT NULL,
+    `name`        varchar(45) DEFAULT NULL,
+    `last_name`   varchar(45) DEFAULT NULL,
+    `email`       varchar(45) DEFAULT NULL,
+    `password`    varchar(200) DEFAULT NULL,
+    `active`      BOOLEAN     DEFAULT TRUE,
+    PRIMARY KEY (`customer_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = latin1;
+
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role`
+(
+    `customer_id` int(11) NOT NULL,
+    `role_id`     int(11) NOT NULL,
+
+    PRIMARY KEY (`customer_id`, `role_id`),
+
+    KEY `FK_ROLE_idx` (`role_id`),
+
+    CONSTRAINT `FK_CUSTOMER_USER` FOREIGN KEY (`customer_id`)
+        REFERENCES `user` (`customer_id`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+
+    CONSTRAINT `FK_ROLE_USER` FOREIGN KEY (`role_id`)
+        REFERENCES `roles` (`role_id`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
