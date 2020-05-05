@@ -69,31 +69,4 @@ public class Crypt {
         return CleartextKeysetHandle.read(JsonKeysetReader.withFile(new File(FILENAME)));
     }
 
-    public static void main(String []args) throws GeneralSecurityException, IOException {
-        String accountsid="ACaffc8e2314c148f730e663be759a147c";
-        String authid="79691b0e54bd89a487666e8a90ed6b70";
-        String phone="+18482279082";
-
-        String pinc = Crypt.getInstance().encryptMessage(accountsid);
-        System.out.println(pinc);
-
-        String dec = Crypt.getInstance().decryptMessage(pinc);
-        System.out.println(dec);
-
-        pinc = Crypt.getInstance().encryptMessage(authid);
-        System.out.println(pinc);
-
-        dec = Crypt.getInstance().decryptMessage(pinc);
-        System.out.println(dec);
-
-
-        pinc = Crypt.getInstance().encryptMessage(phone);
-        System.out.println(pinc);
-
-        dec = Crypt.getInstance().decryptMessage(pinc);
-        System.out.println(dec);
-
-
-
-    }
 }
