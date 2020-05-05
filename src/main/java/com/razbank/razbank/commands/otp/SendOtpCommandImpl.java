@@ -5,6 +5,7 @@ import com.razbank.razbank.exceptions.generic.RazBankException;
 import com.razbank.razbank.repositories.opt.OtpRepository;
 import com.razbank.razbank.requests.otp.SendOtpRequest;
 import com.razbank.razbank.requests.otp.SendOtpRequestImpl;
+import com.razbank.razbank.utils.Crypt;
 import com.razbank.razbank.utils.ResponseInfo;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -54,9 +55,9 @@ public class SendOtpCommandImpl extends SendOtpCommand {
         try{
             ot = sendOtpRequest.getOtp();
             otp = generateOtpCode(ot);
-            Twilio.init(accountSid, authId);
+            Twilio.init(Crypt.getInstance().decryptMessage(accountSid), Crypt.getInstance().decryptMessage(authId));
             Message.creator(new PhoneNumber(otp.getPhone()),
-                    new PhoneNumber(phone),
+                    new PhoneNumber(Crypt.getInstance().decryptMessage(phone)),
                     otp.getOtpCode()).create();
             otpRepository.save(otp);
             this.setOtp(ot);
