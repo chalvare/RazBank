@@ -61,8 +61,8 @@ public class OtpServiceImpl implements OptService{
         Otp otp=null;
         try {
             SendOtpRequest sendOtpRequest = new SendOtpRequestImpl();
-            //otp = buildOtp(otpDTO);//TODO descomentar esto y eliminar lo de abajo
-            otp=Otp.builder().id(1).phone("+34676658224").expiryTime(1234567890L).build();
+            otp = buildOtp(otpDTO);//TODO descomentar esto y eliminar lo de abajo
+            //otp=Otp.builder().id(1).phone("+34676658224").expiryTime(1234567890L).build();
             sendOtpRequest.setOtp(otp);
             sendOtpCommand.setSendOtpRequest(sendOtpRequest);
             sendOtpCommand.execute();
@@ -98,7 +98,7 @@ public class OtpServiceImpl implements OptService{
         try {
             VerifyOtpRequest verifyOtpRequest = new VerifyOtpRequestImpl();
 
-            otp = buildOtp("0663",1);//todo sustituir por variables de entrada
+            otp = buildOtp(otpCode,customerId);//todo sustituir por variables de entrada
 
             verifyOtpRequest.buildOtp(otp);
 

@@ -52,20 +52,20 @@
     </div>
 </nav>
 
-<h3>Password</h3>
+<h3>OTP</h3>
 
 <!-- Page Content -->
 <div class="container">
     <br>
     <!-- /.container -->
     <img class="logo img-rounded rounded mx-auto d-block" alt="logo"  src="../../static/images/logo.png" th:src="@{../images/logo.png}"/>
-    <!--/*@thymesVar id="user" type="com.razbank.razbank.entities.login.User"*/-->
-    <form class="needs-validation" novalidate  th:action="@{/onBoarding/password}" th:object="${user}" method="POST">
+    <!--/*@thymesVar id="otp" type="com.razbank.razbank.entities.otp.Otp"*/-->
+    <form class="needs-validation" novalidate  th:action="@{/onBoarding/otp}" th:object="${otp}" method="POST">
 
         <div class="form-row">
             <div class="col-md-4 mb-3">
-                <label for="validationCustom01">Password</label>
-                <input type="text" th:field="*{password}" class="form-control" id="validationCustom01" placeholder="Password"  required>
+                <label for="validationCustom01">otp</label>
+                <input type="text" th:field="*{otpCode}" class="form-control" id="validationCustom01" placeholder="otp"  required>
                 <div class="valid-feedback">
                     Looks good!
                 </div>

@@ -37,7 +37,7 @@ public class SendOtpCommandImpl extends SendOtpCommand {
     @Value("${twilio.otp.phone}")
     public String phone;
 
-    public static final int MINUTES = 1;
+    public static final int MINUTES = 10;
     private final OtpRepository otpRepository;
     private SendOtpRequestImpl sendOtpRequest;
     private Otp otp;
@@ -53,12 +53,12 @@ public class SendOtpCommandImpl extends SendOtpCommand {
         Otp ot = null;
         try{
             ot = sendOtpRequest.getOtp();
-            ot = generateOtpCode(ot);
+            otp = generateOtpCode(ot);
             Twilio.init(accountSid, authId);
-            /*Message.creator(new PhoneNumber(otp.getPhone()),
+            Message.creator(new PhoneNumber(otp.getPhone()),
                     new PhoneNumber(phone),
                     otp.getOtpCode()).create();
-            otpRepository.save(otp);*/
+            otpRepository.save(otp);
             this.setOtp(ot);
             this.setSuccess(true);
         }catch (Exception e) {
